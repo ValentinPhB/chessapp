@@ -173,10 +173,10 @@ class PlayerDataMenuController:
             # 'ADD PLAYER MENU CONTROLLER'.
             if len(player_to_show) != 0:
                 for players in player_to_show:
-                    self.menu.add("auto", f"    NOM DE FAMILLE :"
-                                          f" '{players['family_name']}',"
+                    self.menu.add("auto", f"    NOM DE FAMILLE : "
+                                          f"'{players['family_name']}',"
                                           f" PRÉNOM :"
-                                          f" '{players['first_name']}',"         
+                                          f" '{players['first_name']}',"
                                           f" DATE DE NAISSANCE :"
                                           f" '{players['date_of_birth']}',"
                                           f" CLASSEMENT GÉNÉRAL :"
@@ -230,11 +230,10 @@ class ContinueMenuController:
                     self.menu.add(
                         "auto", f"    NOM : '{_dict['name']}',"
                                 f" LIEU : '{_dict['place']}',"
-                                f" DATE DE DEBUT :"
-                                f" '{_dict['date_start']}', "
-                                f" ROUND(S) JOUÉ(S) :"
+                                f" DATE DE DEBUT :"f" '{_dict['date_start']}',"
+                                f"ROUND(S) JOUÉ(S) :"
                                 f" '{len(_dict['all_round'])}' sur"
-                                f" '{_dict['nb_total_round']}'," 
+                                f" '{_dict['nb_total_round']}',"
                                 f" NOMBRE DE JOUEURS :"
                                 f" '{len(_dict['players_tournament'])}'"
                                 f" CONTRÔLE DE TEMPS :"
