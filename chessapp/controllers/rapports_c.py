@@ -1,29 +1,41 @@
-# import lib standard sans install
 
-# import lib a installer
-
-# import lib locales
 from chessapp.controllers import menus_c
+from chessapp.views.rapports_v import RapportPlayerViews,\
+    RapportTournamentViews
 
 
-class RapportController:
+class RapportPlayerController:
     """
-    NOT IMPLEMENTED YET.
+    This controller display two rapports ; all actors in alphabetic order and
+     all actors in ranking order.
+    The user can consult them, he is also redirect to RapportMenuController.
     """
-    def __init__(self,):
-        pass
+    def __init__(self, db):
+        self.db = db
+        self.view = RapportPlayerViews()
 
     def __call__(self):
-        print("CLÉ NON IMPLÉMENTÉE.")
-        print("RETOUR MENU HOMME")
-        return menus_c.HomeMenuController()
+        self.view.welcome()
 
-    # • Liste de tous les acteurs :
-    #     ◦ par ordre alphabétique ;
-    #     ◦ par classement.
-    # • Liste de tous les joueurs d'un tournoi :
-    #     ◦ par ordre alphabétique ;
-    #     ◦ par classement.
-    # • Liste de tous les tournois.
-    # • Liste de tous les tours d'un tournoi.
-    # • Liste de tous les matchs d'un tournoi.
+        self.view.display_actors_rank(self.db.players_table)
+        self.view.display_actors_alpha(self.db.players_table)
+        self.view.finish()
+        return menus_c.RapportMenuController()
+
+
+class RapportTournamentController:
+    """
+        NOT IMPLEMENTED YET.
+        """
+
+    def __init__(self, db, dict_tournament):
+        self.db = db
+        self.view = RapportTournamentViews(dict_tournament)
+        self.dict_tournament = dict_tournament
+
+    def __call__(self):
+        self.view.welcome()
+        self.view.all_player_tournament()
+        self.view.all_rounds_tournament()
+        self.view.finish()
+        return menus_c.RapportMenuController()
