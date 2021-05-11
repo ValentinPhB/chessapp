@@ -5,7 +5,8 @@ from datetime import datetime
 class Round:
 
     """
-    Round() instances represents rounds itself contained in Tournament() instance. It will contains Match() instances.
+    Round() instances represents rounds itself contained in Tournament()
+    instance. It will contains Match() instances.
     """
 
     def __init__(self, current_tournament_all_round, nb_total_round):

@@ -4,7 +4,8 @@ class Player:
     Player() instances represents players.
     """
 
-    def __init__(self, family_name=None, first_name=None, date_of_birth=None, gender=None, ranking=None):
+    def __init__(self, family_name=None, first_name=None, date_of_birth=None,
+                 gender=None, ranking=None):
         self._family_name = family_name
         self._first_name = first_name
         self._date_of_birth = date_of_birth
@@ -17,7 +18,8 @@ class Player:
         return str(vars(self))
 
     def __hash__(self):
-        return hash((self._family_name, self._first_name, self._date_of_birth, self._ranking, self._point))
+        return hash((self._family_name, self._first_name, self._date_of_birth,
+                     self._ranking, self._point))
 
     def __eq__(self, other):
         if isinstance(other, type(self)):

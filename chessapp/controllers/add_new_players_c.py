@@ -11,11 +11,11 @@ from chessapp.controllers import menus_c
 
 class AddNewPlayerController:
     """
-    For all new player this controller will ask player's information to the user
-    (family_name, first_name, date_of_birth, gender, ranking)
+    For all new player this controller will ask player's information to the
+     user (family_name, first_name, date_of_birth, gender, ranking)
     Then checking if this new player doesn't already exists in database.
-    If not, this player will be added to the current tournament and save in data base.
-    Add players comes after the user had create a tournament.
+    If not, this player will be added to the current tournament and save in
+    data base. Add players comes after the user had create a tournament.
     A player will be a Player() instance.
     """
 
@@ -70,13 +70,20 @@ class AddNewPlayerController:
             while self.check_1:
                 self.view.player_date_birth()
 
-                day = self._loop_date("DU JOUR DE NAISSANCE", val_max=31, _format="dd")
-                month = self._loop_date("DU MOIS DE NAISSANCE", val_max=12, _format="mm")
-                year = self._loop_date("DE L'ANNÉE DE NAISSANCE", val_max=float("inf"), _format="yyyy", gender="e")
+                day = self._loop_date("DU JOUR DE NAISSANCE",
+                                      val_max=31, _format="dd")
+
+                month = self._loop_date("DU MOIS DE NAISSANCE",
+                                        val_max=12, _format="mm")
+
+                year = self._loop_date("DE L'ANNÉE DE NAISSANCE",
+                                       val_max=float("inf"),
+                                       _format="yyyy",
+                                       gender="e")
 
                 try:
                     datetime(int(year), int(month), int(day))
-                    self.player.date_of_birth = f"{day}/{month}/{year}"
+                    self.player.date_of_birth = f'{day}/{month}/{year}'
                     self.check_1 = False
                 except ValueError:
                     self.view.wrong_dates()
@@ -102,7 +109,7 @@ class AddNewPlayerController:
             self.view.player_ranking_1()
             while self.check_1:
                 self.view.player_ranking_2()
-                self.view.ranking_suggestion()
+                self.view.ranking_suggestion(self.db.players_table)
                 answer = input(">> ")
                 if answer.upper() == 'C':
                     if len(self.db.players_table) > 0:
@@ -117,7 +124,8 @@ class AddNewPlayerController:
                 else:
                     try:
                         if int(answer) > 0:
-                            if self.db.players_table.contains(where("ranking") == answer):
+                            if self.db.players_table.contains(where("ranking")
+                                                              == answer):
                                 self.view.ranking_exists()
                                 self.check_2 = True
                                 while self.check_2:
@@ -140,10 +148,14 @@ class AddNewPlayerController:
                     except ValueError:
                         self.view.positive_value_needed()
             self.check_1 = True
-            if self.db.players_table.contains((where('family_name') == self.player.family_name)
-                                              & (where('first_name') == self.player.first_name)
-                                              & (where('date_of_birth') == self.player.date_of_birth)
-                                              & (where('gender') == self.player.gender)):
+            if self.db.players_table.contains((where('family_name')
+                                               == self.player.family_name)
+                                              & (where('first_name')
+                                                 == self.player.first_name)
+                                              & (where('date_of_birth')
+                                                 == self.player.date_of_birth)
+                                              & (where('gender')
+                                                 == self.player.gender)):
                 self.view.already_in_db()
                 self.view.welcome_already()
                 return menus_c.AddPlayerMenuController(self.tournament)
@@ -182,8 +194,9 @@ class AddNewPlayerController:
 
 class AddPlayerFromDataController:
     """
-    If the user wants to add a players to a tournament from database (table "players")
-    this controller will deserialize it and add it to the current tournament.
+    If the user wants to add a players to a tournament from database
+     (table "players") this controller will deserialize it and add it to
+      the current tournament.
     """
 
     def __init__(self, current_tournament,  data_player):

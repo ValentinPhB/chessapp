@@ -6,6 +6,7 @@ from tinydb import where
 from chessapp.models.db_logic_m import DataBase
 from chessapp.views.create_tournament_v import CreateTournamentView
 from chessapp.controllers import menus_c
+from chessapp.utils.constant_u import DEFAULT_ROUND
 
 
 class CreateTournamentController:
@@ -61,7 +62,7 @@ class CreateTournamentController:
             self.check_1 = True
 
             # TOTAL NUMBER OF ROUND.
-            self.view.user_nb_round_tournament()
+            self.view.user_nb_round_tournament(DEFAULT_ROUND)
             self.view.error_yes_no()
             while self.check_1:
                 answer = input(">> ")
@@ -72,7 +73,8 @@ class CreateTournamentController:
                         inp_nb_round = input(">> ")
                         try:
                             if int(inp_nb_round) > 0:
-                                self.tournament.nb_total_round = str(inp_nb_round)
+                                self.tournament.nb_total_round\
+                                    = str(inp_nb_round)
                                 self.check_2 = False
                             else:
                                 self.view.positive_value_needed()
@@ -91,13 +93,19 @@ class CreateTournamentController:
             while self.check_1:
                 answer = input(">> ")
                 if answer.upper() == 'O':
-                    self.tournament.date_start = datetime.now().date().strftime("%d/%m/%Y")
+                    self.tournament.date_start =\
+                        datetime.now().date().strftime("%d/%m/%Y")
                     self.check_1 = False
                 elif answer.upper() == 'N':
 
-                    day = self._loop_date("DU JOUR", val_max=31, _format="dd")
-                    month = self._loop_date("DU MOIS", val_max=12, _format="mm")
-                    year = self._loop_date("DE L'ANNÉE", val_max=float("inf"), _format="yyyy", gender="e")
+                    day = self._loop_date("DU JOUR",
+                                          val_max=31, _format="dd")
+                    month = self._loop_date("DU MOIS",
+                                            val_max=12, _format="mm")
+                    year = self._loop_date("DE L'ANNÉE",
+                                           val_max=float("inf"),
+                                           _format="yyyy",
+                                           gender="e")
 
                     # CHECKING IF DATE EXISTS.
                     try:
@@ -149,12 +157,14 @@ class CreateTournamentController:
                     self.check_1 = False
 
             # CHECKING IF TOURNAMENT ALREADY EXISTS IN DATABASE.
-            if self.db.tournaments_table.contains(((where('name') == self.tournament.name)
-                                                   & (where('place') == self.tournament.place)
-                                                   & (where('date_start') == self.tournament.date_start)
-                                                   & (where('nb_total_round') == self.tournament.nb_total_round)
-                                                   & (where('control_time') == self.tournament.control_time)
-                                                   & (where('description') == self.tournament.description))):
+            if self.db.tournaments_table.contains(
+                    ((where('name') == self.tournament.name)
+                     & (where('place') == self.tournament.place)
+                     & (where('date_start') == self.tournament.date_start)
+                     & (where('nb_total_round')
+                        == self.tournament.nb_total_round)
+                     & (where('control_time') == self.tournament.control_time)
+                     & (where('description') == self.tournament.description))):
 
                 self.view.already_in_db()
                 self.view.welcome_already()

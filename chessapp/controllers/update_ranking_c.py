@@ -9,22 +9,24 @@ from chessapp.controllers import menus_c
 class UpdateRankingController:
     """
     When during the tournament,
-     the user wants to update a ranking for players and has already chose witch one this controller will ask him for
-      the new rank and avert him if the value is already in database for an other player.
-      The user is free to assign a ranking witch is already taken by an other player is data base.
+     the user wants to update a ranking for players and has already chose
+      witch one this controller will ask him for the new rank and avert him if
+       the value is already in database for an other player.
+      The user is free to assign a ranking witch is already taken by an other
+       player is data base.
       This controller will ask him if he wants to.
     """
 
     def __init__(self, current_tournament, player_instance_match):
         self.db = DataBase()
         self.view = UpdateRankingView()
-        self.player_instance_match = player_instance_match
+        self.player_inst = player_instance_match
         self.tournament = current_tournament
         self.check_1 = True
 
     def __call__(self):
         while self.check_1:
-            self.view.welcome(self.player_instance_match)
+            self.view.welcome(self.player_inst)
             answer = input(">> ")
 
             # SHOW THE GLOBAL RANKING FOR HELP THE USER.
@@ -40,30 +42,43 @@ class UpdateRankingController:
 
                     # CHECKING FOR POSITIVE VALUE.
                     if int(answer) > 0:
-                        if self.db.players_table.contains(where("ranking") == answer):
+                        if self.db.players_table.contains(where("ranking")
+                                                          == answer):
                             self.view.ranking_exists()
                             self.check_2 = True
                             while self.check_2:
                                 self.view.ranking_exists_keep()
                                 answer_2 = input(">> ")
 
-                                # ASK USER IF HE WANTS TO ASSIGN A VALUE WHO ALREADY EXISTS FOR AN OTHER PLAYER.
+                                # ASK USER IF HE WANTS TO ASSIGN A VALUE
+                                # WHO ALREADY EXISTS FOR AN OTHER PLAYER.
                                 if answer_2.upper() == 'O':
                                     self.view.ranking_ok()
 
                                     # UPDATE RANKING IN DATABASE.
                                     self.db.players_table.update(
                                         {'ranking': answer},
-                                        ((where('family_name') == self.player_instance_match.family_name)
-                                         & (where('first_name') == self.player_instance_match.first_name)
-                                         & (where('date_of_birth') == self.player_instance_match.date_of_birth)))
-                                    for instances_players in self.tournament.players_tournament:
-                                        if instances_players.family_name == self.player_instance_match.family_name\
-                                                and instances_players.first_name ==\
-                                                self.player_instance_match.first_name\
-                                                and instances_players.date_of_birth\
-                                                == self.player_instance_match.date_of_birth:
-                                            instances_players.ranking = answer
+                                        ((where('family_name')
+                                          == self.player_inst.family_name)
+                                         & (where('first_name')
+                                            == self.player_inst.first_name)
+                                         &
+                                         (where('date_of_birth')
+                                          == self.player_inst.date_of_birth)))
+
+                                    for inst_play in\
+                                            self.tournament.players_tournament:
+
+                                        if inst_play.family_name\
+                                                == self.player_inst.\
+                                                family_name\
+                                                and inst_play.first_name\
+                                                == self.player_inst.first_name\
+                                                and inst_play.date_of_birth\
+                                                == self.player_inst.\
+                                                date_of_birth:
+
+                                            inst_play.ranking = answer
                                         else:
                                             pass
                                     self.check_2 = False
@@ -76,20 +91,25 @@ class UpdateRankingController:
                             # UPDATE RANKING IN DATABASE.
                             self.view.ranking_ok_and_free()
                             self.db.players_table.update(
-                                {'ranking': answer}, ((where('family_name') == self.player_instance_match.family_name)
-                                                      & (where('first_name') == self.player_instance_match.first_name)
-                                                      & (where('date_of_birth') ==
-                                                         self.player_instance_match.date_of_birth)))
+                                {'ranking': answer}, (
+                                        (where('family_name')
+                                         == self.player_inst.family_name)
+                                        & (where('first_name')
+                                            == self.player_inst.first_name)
+                                        & (where('date_of_birth') ==
+                                            self.player_inst.date_of_birth)))
 
-                            # UPDATE ALSO IN THE PLAYERS TOURNAMENT OF THE CURRENT_TOURNAMENT.
-                            for instances_players in self.tournament.players_tournament:
-                                if instances_players.family_name == \
-                                        self.player_instance_match.family_name \
-                                        and instances_players.first_name == \
-                                        self.player_instance_match.first_name \
-                                        and instances_players.date_of_birth == \
-                                        self.player_instance_match.date_of_birth:
-                                    instances_players.ranking = answer
+                            # UPDATE ALSO IN THE PLAYERS TOURNAMENT OF THE
+                            # CURRENT_TOURNAMENT.
+                            for inst_play in self.tournament.\
+                                    players_tournament:
+                                if inst_play.family_name == \
+                                        self.player_inst.family_name \
+                                        and inst_play.first_name == \
+                                        self.player_inst.first_name \
+                                        and inst_play.date_of_birth == \
+                                        self.player_inst.date_of_birth:
+                                    inst_play.ranking = answer
                                 else:
                                     pass
                             self.check_1 = False
@@ -97,5 +117,9 @@ class UpdateRankingController:
                         self.view.positive_value_needed()
                 except ValueError:
                     self.view.positive_value_needed()
+
+        # SAVE ACTUAL STATE.
+        self.db.save_tournament(self.tournament)
+        self.view.saving_state()
 
         return menus_c.SuggestRankingMenuController(self.tournament)
