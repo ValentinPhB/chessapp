@@ -3,6 +3,7 @@ from datetime import datetime
 
 from chessapp.views.update_results_v import UpdateResultsView
 from chessapp.controllers import menus_c
+from chessapp.models.db_logic_m import DataBase
 
 
 class UpdateResultsController:
@@ -17,6 +18,7 @@ class UpdateResultsController:
         self.matches = self.round.matches
         self.view = UpdateResultsView()
         self.check_1 = True
+        self.db = DataBase()
 
     def __call__(self):
 
@@ -61,7 +63,12 @@ class UpdateResultsController:
                     self.view.information_value()
 
         # SET DATE_ENDS FOR ROUND.
-        self.tournament.all_round[-1].time_ends = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        self.tournament.all_round[-1].time_ends = (
+            datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+
+        # SAVE ACTUAL STATE.
+        self.db.save_tournament(self.tournament)
+        self.view.saving_state()
 
         # RETURN FOR SUGGEST UPDATE RANKING.
         return menus_c.SuggestRankingMenuController(self.tournament)

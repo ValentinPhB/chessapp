@@ -39,7 +39,8 @@ class EndScreenSaveController:
 class EndTournamentController:
     """
     Special ending, when the tournament is over.
-    this controller will show the ranking of the tournament and ask the user to update the global ranking.
+    this controller will show the ranking of the tournament and ask the user
+     to update the global ranking.
     """
 
     def __init__(self, current_tournament):
@@ -54,7 +55,8 @@ class EndTournamentController:
         self._add_date_end_tournament()
 
         # SHOW TOURNAMENT'S RANKING.
-        self.tournament.players_tournament.sort(key=lambda x: (- x.point, x.ranking))
+        self.tournament.players_tournament.sort(
+            key=lambda x: (- x.point, x.ranking))
         self.view.show_ranking_tournament(self.tournament.players_tournament)
 
         # ASKING USER TO UPDATE ALL RANK TO PLAYERS IN DATABASE.
@@ -82,7 +84,8 @@ class EndTournamentController:
                 answer = input(">> ")
                 try:
                     value = int(answer)
-                    if 0 < value and self.db.players_table.contains(where("ranking") == answer):
+                    if 0 < value and self.db.players_table.contains(
+                            where("ranking") == answer):
                         self.view.ranking_exists()
                         self.check_2 = True
                         while self.check_2:
@@ -90,13 +93,21 @@ class EndTournamentController:
                             answer_2 = input(">> ")
                             if answer_2.upper() == 'O':
                                 self.db.players_table.update(
-                                    {'ranking': answer}, ((where('family_name') == element['family_name'])
-                                                          & (where('first_name') == element['first_name'])
-                                                          & (where('date_of_birth') == element['date_of_birth'])))
-                                for instances_players in current_tournament.players_tournament:
-                                    if instances_players.family_name == element['family_name']\
-                                            and instances_players.first_name == element['first_name']\
-                                            and instances_players.date_of_birth == element['date_of_birth']:
+                                    {'ranking': answer}, (
+                                            (where('family_name')
+                                             == element['family_name'])
+                                            & (where('first_name')
+                                               == element['first_name'])
+                                            & (where('date_of_birth')
+                                               == element['date_of_birth'])))
+                                for instances_players in\
+                                        current_tournament.players_tournament:
+                                    if instances_players.family_name\
+                                            == element['family_name']\
+                                            and instances_players.first_name\
+                                            == element['first_name'] and\
+                                            instances_players.date_of_birth\
+                                            == element['date_of_birth']:
                                         instances_players.ranking = answer
                                     else:
                                         pass
@@ -109,13 +120,21 @@ class EndTournamentController:
                     elif 0 < value:
                         self.view.ranking_ok()
                         self.db.players_table.update(
-                            {'ranking': answer}, ((where('family_name') == element['family_name'])
-                                                  & (where('first_name') == element['first_name'])
-                                                  & (where('date_of_birth') == element['date_of_birth'])))
-                        for instances_players in current_tournament.players_tournament:
-                            if instances_players.family_name == element['family_name']\
-                                    and instances_players.first_name == element['first_name']\
-                                    and instances_players.date_of_birth == element['date_of_birth']:
+                            {'ranking': answer}, (
+                                    (where('family_name')
+                                     == element['family_name'])
+                                    & (where('first_name')
+                                       == element['first_name'])
+                                    & (where('date_of_birth')
+                                       == element['date_of_birth'])))
+                        for instances_players in\
+                                current_tournament.players_tournament:
+                            if instances_players.family_name\
+                                    == element['family_name']\
+                                    and instances_players.first_name\
+                                    == element['first_name']\
+                                    and instances_players.date_of_birth\
+                                    == element['date_of_birth']:
                                 instances_players.ranking = answer
                             else:
                                 pass
@@ -131,4 +150,5 @@ class EndTournamentController:
     def _reset_all_ranking_bdd(self):
         for player in self.db.players_table:
             player_rank = player['ranking']
-            self.db.players_table.update({'ranking': 0}, where('ranking') == player_rank)
+            self.db.players_table.update({'ranking': 0},
+                                         where('ranking') == player_rank)

@@ -13,7 +13,8 @@ class ApplicationController:
 
     def start(self):
         """
-        This loop allows to move to the nex controller. It start with redirect the user to the HomeMenuController.
+        This loop allows to move to the nex controller.
+         It start with redirect the user to the HomeMenuController.
         """
 
         self.controller = HomeMenuController()

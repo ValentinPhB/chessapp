@@ -5,7 +5,8 @@ from chessapp.controllers import menus_c
 
 class ContinueTournamentController:
     """
-    This controller referring the user in function of the state of the current tournament.
+    This controller referring the user in function of the state of
+    the current tournament.
     """
 
     def __init__(self, dict_tournament):

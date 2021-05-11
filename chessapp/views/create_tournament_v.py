@@ -1,7 +1,4 @@
 
-from chessapp.utils.constant_u import DEFAULT_ROUND
-
-
 class CreateTournamentView:
     """
     All views for CreateTournamentController.
@@ -24,8 +21,9 @@ class CreateTournamentView:
 
     # TOTAL NUMBER OF ROUND.
     @staticmethod
-    def user_nb_round_tournament():
-        print(f"\n Le NOMBRE DE TOUR est-il ÉGAL à la valeur par défault suivante > {DEFAULT_ROUND} < ?")
+    def user_nb_round_tournament(default_round):
+        print(f"\n Le NOMBRE DE TOUR est-il ÉGAL à la valeur par défault"
+              f" suivante > {default_round} < ?")
 
     # DATE START.
     @staticmethod
@@ -45,22 +43,26 @@ class CreateTournamentView:
     # TOOLS TO INTERACT WITH USER.
     @staticmethod
     def already_in_db():
-        print("\n> INFORMATION : Il n'y a actuellement un tournoi identique dans la base de données.\n")
+        print("\n> INFORMATION : Il n'y a actuellement un tournoi identique"
+              " dans la base de données.\n")
         print("Ce tournoi ne peut être créé.")
 
     @staticmethod
     def welcome_already():
         print(
-            "\n\nRÉASSIGNEZ DE NOUVELLES VALEURS AU TOURNOI POUR QU'IL N'AIT AUCUN DOUBLE DANS LA BASE DE DONNÉES.")
+            "\n\nRÉASSIGNEZ DE NOUVELLES VALEURS AU TOURNOI POUR QU'IL N'AIT "
+            "AUCUN DOUBLE DANS LA BASE DE DONNÉES.")
         print("Si les conditions sont remplies ce tournoi sera créé.")
 
     @staticmethod
     def error_yes_no():
-        print("> INFORMATION :  Ici, oui 'O' ou non 'N' est attendue comme réponse. \n")
+        print("> INFORMATION :  Ici, oui 'O' ou non 'N' est attendue"
+              " comme réponse. \n")
 
     @staticmethod
     def enter_value():
-        print(" \n Entrez votre valeur pour le nombre de rounds souhaité : \n ")
+        print(" \n Entrez votre valeur pour le nombre de rounds"
+              " souhaité : \n ")
 
     @staticmethod
     def positive_value_needed():
@@ -68,11 +70,13 @@ class CreateTournamentView:
 
     @staticmethod
     def control_time_guide():
-        print("> INFORMATION : Ici ;  bullet '1' , blitz '2' ou coup rapide '3' est attendue comme réponse. \n")
+        print("> INFORMATION : Ici ;  bullet '1' , blitz '2' ou coup rapide"
+              " '3' est attendue comme réponse. \n")
 
     @staticmethod
     def empty_answer():
-        print("> INFORMATION : Ici, une chaine de caratère est attendue comme réponse. \n ")
+        print("> INFORMATION : Ici, une chaine de caratère est attendue"
+              " comme réponse. \n ")
 
     @staticmethod
     def wrong_dates():
@@ -80,22 +84,27 @@ class CreateTournamentView:
 
     @staticmethod
     def loop_date_start_v(d_m_y, gender, _format, val_max):
-        print(f"\nVeuillez entrer la valeur numérique {d_m_y} souhaité{gender} :")
+        print(f"\nVeuillez entrer la valeur numérique {d_m_y}"
+              f" souhaité{gender} :")
         print(f" 1 < VOTRE VALEUR {_format} < {val_max}\n")
 
     @staticmethod
     def error_loop_date_start(val_max, _format):
-        print(f"> INFORMATION : Ici un entier positif est attendu. 1 < VOTRE VALEUR {_format} < {val_max}\n")
+        print(f"> INFORMATION : Ici un entier positif est attendu. 1 <"
+              f" VOTRE VALEUR {_format} < {val_max}\n")
 
     @staticmethod
     def save_or_correct_v(entry):
-        print(f"> INFORMATION : Voulez-vous SAUVEGARDER 'S' ou CORRIGER 'C' l'entrée : '{entry}' ?\n")
+        print(f"> INFORMATION : Voulez-vous SAUVEGARDER 'S' ou CORRIGER 'C'"
+              f" l'entrée : '{entry}' ?\n")
 
     @staticmethod
     def s_or_c_error():
-        print("> INFORMATION :  Ici, sauvegarder 'S' ou corriger 'C' est attendue comme réponse. \n")
+        print("> INFORMATION :  Ici, sauvegarder 'S' ou corriger 'C' est"
+              " attendue comme réponse. \n")
 
     # SAVING MESSAGE.
     @staticmethod
     def saving_state():
-        print("\n\n\n\n>> L'ÉTAT ACTUEL DU TOURNOI EST SAUVEGARDÉ DANS LA BASE DE DONNÉES <<\n")
+        print("\n\n\n\n>> L'ÉTAT ACTUEL DU TOURNOI EST SAUVEGARDÉ DANS"
+              " LA BASE DE DONNÉES <<\n")

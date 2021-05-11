@@ -8,8 +8,10 @@ from chessapp.controllers.end_c import EndTournamentController
 
 class RoundMakerController:
     """
-    This controller will create matches for rounds in function of the state of the current tournament.
-    If it's the first round, if the last round has been already payed and for all other rounds.
+    This controller will create matches for rounds in function of the state of
+     the current tournament.
+    If it's the first round, if the last round has been already payed and for
+     all other rounds.
     """
 
     def __init__(self, current_tournament):
@@ -33,9 +35,12 @@ class RoundMakerController:
             return menus_c.RoundMakingMenuController(self.tournament)
 
         # IF IT'S BETWEEN THE FIRST AND THE LAST ROUND.
-        elif 1 <= len(self.tournament.all_round) < int(self.tournament.nb_total_round):
+        elif 1 <= len(self.tournament.all_round) <\
+                int(self.tournament.nb_total_round):
+
             precedent_round = self.tournament.all_round[-1]
-            if precedent_round.matches[0].result_1 == precedent_round.matches[0].result_2 == 0.0:
+            if precedent_round.matches[0].result_1 \
+                    == precedent_round.matches[0].result_2 == 0.0:
 
                 # RESULT NON ASSIGNED.
                 # SHOW PRECEDENT MATCH AN ASSIGN IT.
@@ -60,7 +65,8 @@ class RoundMakerController:
     # SWISS ALGORITHM FOR THE FIRST MATCHES.
     def _first_matches(self):
 
-        self.tournament.players_tournament.sort(key=lambda x: (- x.point, x.ranking))
+        self.tournament.players_tournament.sort(
+            key=lambda x: (- x.point, x.ranking))
 
         length = len(self.tournament.players_tournament)
         middle_index = length // 2
@@ -69,7 +75,8 @@ class RoundMakerController:
         i = 0
         list_return = []
         for element in first_half:
-            list_return.append(Match(player_1=element, result_1=element.result, player_2=second_half[i],
+            list_return.append(Match(player_1=element, result_1=element.result,
+                                     player_2=second_half[i],
                                      result_2=second_half[i].result))
             i += 1
         return list_return
@@ -77,13 +84,16 @@ class RoundMakerController:
     # SWISS ALGORITHM FOR ALL OTHER MATCHES ||||||| IN PROCESS ||||||||||.
     def _matches_n(self):
 
-        self.tournament.players_tournament.sort(key=lambda x: (- x.point, x.ranking))
+        self.tournament.players_tournament.sort(
+            key=lambda x: (- x.point, x.ranking))
         i = 0
         list_return = []
         while i <= 6:
-            list_return.append((Match(player_1=self.tournament.players_tournament[i],
-                                      result_1=self.tournament.players_tournament[i].result,
-                                      player_2=self.tournament.players_tournament[i + 1],
-                                      result_2=self.tournament.players_tournament[i + 1].result)))
+            list_return.append((
+                Match(player_1=self.tournament.players_tournament[i],
+                      result_1=self.tournament.players_tournament[i].result,
+                      player_2=self.tournament.players_tournament[i + 1],
+                      result_2=self.tournament.players_tournament[i +
+                                                                  1].result)))
             i += 2
         return list_return
