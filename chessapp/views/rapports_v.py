@@ -17,7 +17,7 @@ class RapportPlayerViews:
                              key=lambda k: int(k['family_name']))
         for player in sorted_list:
             print(f"    NOM DE FAMILLE : '{player['family_name']}',"
-                  f" PRÉNOM : '{player['first_name']}'," 
+                  f" PRÉNOM : '{player['first_name']}',"
                   f" DATE DE NAISSANCE : '{player['date_of_birth']}',"
                   f" SEXE : '{player['gender']}',"
                   f" CLASSEMENT GÉNÉRAL : '{player['ranking']}'.")
