@@ -133,4 +133,6 @@ Environnement de travail/
 env
 .idea/
 
+# tinydb
+db_centre_echec.json
 
