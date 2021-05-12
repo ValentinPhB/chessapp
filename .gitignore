@@ -134,5 +134,7 @@ env
 .idea/
 
 # tinydb
+chessapp/controllers/db_centre_echec.json
+
+#json
 db_centre_echec.json
-flake-report
