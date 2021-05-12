@@ -29,16 +29,17 @@ class DataBase:
 
         dicts_rounds = []
         dicts_players = []
+
         for player in instances_players:
-            a = {"family_name": player.family_name,
-                 "first_name": player.first_name, "date_of_birth":
-                     player.date_of_birth,
-                 "gender": player.gender, "ranking": player.ranking,
+            a = {"family_name": player.family_name, "first_name": player.first_name,
+                 "date_of_birth": player.date_of_birth, "gender": player.gender, "ranking": player.ranking,
                  "result": player.result, "point": player.point}
+
             dicts_players.append(a)
 
         for round_x in instances_rounds:
             matches_list = []
+
             name = round_x.name
             nb_total_round = round_x.nb_total_round
             time_starts = round_x.time_starts
@@ -68,17 +69,15 @@ class DataBase:
 
                 result_1 = match.result_1
                 result_2 = match.result_2
-                serialized_match = ([serialized_first_p, result_1],
-                                    [serialized_second_p, result_2])
 
-                b = {"match": serialized_match, "first_p": serialized_first_p,
-                     "second_p": serialized_second_p,
+                serialized_match = ([serialized_first_p, result_1], [serialized_second_p, result_2])
+
+                b = {"match": serialized_match, "first_p": serialized_first_p, "second_p": serialized_second_p,
                      "result_1": result_1, "result_2": result_2}
 
                 matches_list.append(b)
 
-            c = {"name": name, "nb_total_round": nb_total_round,
-                 "matches": matches_list, "time_starts": time_starts,
+            c = {"name": name, "nb_total_round": nb_total_round, "matches": matches_list, "time_starts": time_starts,
                  "time_ends": time_ends}
 
             dicts_rounds.append(c)
@@ -95,27 +94,22 @@ class DataBase:
     def save_tournament(self, tournament):
         # SAVING TOURNAMENT() IN TINY DATA BASE.
         # CHECKING IF IT ALREADY EXISTS IN DATA BASE.
-        if self.tournaments_table.contains((where("name")
-                                            == tournament.name)
-                                           & (where("place")
-                                              == tournament.place)
-                                           & (where("date_start")
-                                              == tournament.date_start)
-                                           & (where("description")
-                                              == tournament.description)):
+        if self.tournaments_table.contains((where("name") == tournament.name) & (
+                where("place") == tournament.place) & (
+                where("date_start") == tournament.date_start) & (
+                where("description") == tournament.description)):
 
             serialize_tournament = self.serialize_tournament(tournament)
-            self.tournaments_table.remove((where("name") == tournament.name)
-                                          & (where("place")
-                                             == tournament.place)
-                                          & (where("date_start")
-                                             == tournament.date_start))
+
+            self.tournaments_table.remove((where("name") == tournament.name) & (
+                where("place") == tournament.place) & (
+                where("date_start") == tournament.date_start))
 
             self.tournaments_table.insert(serialize_tournament)
+
         else:
             serialize_tournament = self.serialize_tournament(tournament)
             self.tournaments_table.insert(serialize_tournament)
-            pass
 
     @staticmethod
     def retrieve_tournament(tournament):
@@ -132,14 +126,16 @@ class DataBase:
         continue_tournament.description = tournament["description"]
 
         all_rounds = []
+
         dict_rounds_list = tournament["all_round"]
+
         for element_1 in dict_rounds_list:
-            round_instance = Round(tournament['all_round'],
-                                   tournament['nb_total_round'])
+            round_instance = Round(tournament['all_round'], tournament['nb_total_round'])
             round_instance.name = element_1["name"]
             round_instance.time_starts = element_1["time_starts"]
             round_instance.time_ends = element_1["time_ends"]
             dict_list_matches = element_1["matches"]
+
             matches_list = []
             for element_2 in dict_list_matches:
                 match_instance = Match()
@@ -147,53 +143,40 @@ class DataBase:
                 # FIRST_P DICT TO INSTANCE.
                 match_instance.first_p = Player()
 
-                match_instance.first_p.family_name\
-                    = element_2["first_p"]['family_name']
+                match_instance.first_p.family_name = element_2["first_p"]['family_name']
 
-                match_instance.first_p.first_name\
-                    = element_2["first_p"]['first_name']
+                match_instance.first_p.first_name = element_2["first_p"]['first_name']
 
-                match_instance.first_p.date_of_birth\
-                    = element_2["first_p"]['date_of_birth']
+                match_instance.first_p.date_of_birth = element_2["first_p"]['date_of_birth']
 
                 match_instance.first_p.gender = element_2["first_p"]['gender']
-                match_instance.first_p.ranking\
-                    = element_2["first_p"]['ranking']
+                match_instance.first_p.ranking = element_2["first_p"]['ranking']
                 match_instance.first_p.result = element_2["first_p"]['result']
                 match_instance.first_p.point = element_2["first_p"]['point']
 
                 # SECOND_P DICT TO INSTANCE.
                 match_instance.second_p = Player()
-                match_instance.second_p.family_name\
-                    = element_2["second_p"]['family_name']
+                match_instance.second_p.family_name = element_2["second_p"]['family_name']
 
-                match_instance.second_p.first_name\
-                    = element_2["second_p"]['first_name']
+                match_instance.second_p.first_name = element_2["second_p"]['first_name']
 
-                match_instance.second_p.date_of_birth\
-                    = element_2["second_p"]['date_of_birth']
+                match_instance.second_p.date_of_birth = element_2["second_p"]['date_of_birth']
 
-                match_instance.second_p.gender\
-                    = element_2["second_p"]['gender']
+                match_instance.second_p.gender = element_2["second_p"]['gender']
 
-                match_instance.second_p.ranking\
-                    = element_2["second_p"]['ranking']
+                match_instance.second_p.ranking = element_2["second_p"]['ranking']
 
-                match_instance.second_p.result\
-                    = element_2["second_p"]['result']
+                match_instance.second_p.result = element_2["second_p"]['result']
 
-                match_instance.second_p.point\
-                    = element_2["second_p"]['point']
+                match_instance.second_p.point = element_2["second_p"]['point']
 
                 # RESULTS.
                 match_instance.result_1 = element_2["result_1"]
                 match_instance.result_2 = element_2["result_2"]
 
                 # MATCH ATTRIBUTE FOR MATCH INSTANCE.
-                match_instance.match = ([match_instance.first_p,
-                                         match_instance.result_1],
-                                        [match_instance.second_p,
-                                         match_instance.result_2])
+                match_instance.match = ([match_instance.first_p, match_instance.result_1],
+                                        [match_instance.second_p, match_instance.result_2])
 
                 # LIST OF ALL MATCHES FOR A ROUND.
                 matches_list.append(match_instance)
@@ -236,20 +219,16 @@ class DataBase:
     def save_player(self, player):
         # SAVING PLAYER() IN TINY DATA BASE.
         # CHECKING IF IT ALREADY EXISTS IN DATA BASE.
-        if self.players_table.search((where("family_name")
-                                      == player.family_name) &
-                                     (where("first_name")
-                                      == player.first_name) &
-                                     (where("date_of_birth")
-                                      == player.date_of_birth)):
+        if self.players_table.search(
+                (where("family_name") == player.family_name) & (
+                    where("first_name") == player.first_name) & (
+                    where("date_of_birth") == player.date_of_birth)):
 
             serialize_player = self.serialize_player(player)
-            self.players_table.remove((where("family_name")
-                                       == player.family_name) &
-                                      (where("first_name")
-                                       == player.first_name) &
-                                      (where("date_of_birth")
-                                       == player.date_of_birth))
+            self.players_table.remove(
+                (where("family_name") == player.family_name) & (
+                    where("first_name") == player.first_name) & (
+                    where("date_of_birth") == player.date_of_birth))
 
             self.players_table.insert(serialize_player)
         else:

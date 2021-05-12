@@ -1,9 +1,10 @@
-
+import time
 from datetime import datetime
 
 from chessapp.views.update_results_v import UpdateResultsView
 from chessapp.controllers import menus_c
 from chessapp.models.db_logic_m import DataBase
+from chessapp.utils.clear_screen_u import Clear
 
 
 class UpdateResultsController:
@@ -21,6 +22,8 @@ class UpdateResultsController:
         self.db = DataBase()
 
     def __call__(self):
+        # CLEAR SCREEN.
+        Clear().screen()
 
         # RESET ALL RESULTS FOR NEW MATCHES.
         for element in self.tournament.players_tournament:
@@ -58,13 +61,15 @@ class UpdateResultsController:
                     # INCREMENT POINTS PLAYER 1 FOR TOURNAMENT RANKING.
                     element.second_p.increment_point(answer_2)
                     self.check_1 = False
+
                 else:
                     self.view.error_max_point()
                     self.view.information_value()
 
         # SET DATE_ENDS FOR ROUND.
-        self.tournament.all_round[-1].time_ends = (
-            datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        self.tournament.all_round[-1].time_ends = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        self.view.auto_add_ends()
+        time.sleep(2)
 
         # SAVE ACTUAL STATE.
         self.db.save_tournament(self.tournament)
@@ -81,14 +86,20 @@ class UpdateResultsController:
             answer = input(">> ")
             try:
                 test = float(answer)
+
                 if test == 1:
                     check_2 = False
+
                 elif test == 0:
                     check_2 = False
+
                 elif test == 0.5:
                     check_2 = False
+
                 else:
                     self.view.error_entry()
+
             except ValueError:
                 self.view.error_entry()
+
         return test

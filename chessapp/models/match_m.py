@@ -6,8 +6,7 @@ class Match:
      contained in Tournament() instance.
     """
 
-    def __init__(self, player_1=None, result_1=None, player_2=None,
-                 result_2=None):
+    def __init__(self, player_1=None, result_1=None, player_2=None, result_2=None):
         self._match = ([player_1, result_1], [player_2, result_2])
 
         self._first_p = player_1
@@ -23,8 +22,7 @@ class Match:
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
-            return (self._first_p, self._second_p) == (other.first_p,
-                                                       other.second_p)
+            return (self._first_p, self._second_p) == (other.first_p, other.second_p)
 
     @property
     def first_p(self):

@@ -1,9 +1,11 @@
+import time
 
 from tinydb import where
 
 from chessapp.models.db_logic_m import DataBase
 from chessapp.views.update_ranking_v import UpdateRankingView
 from chessapp.controllers import menus_c
+from chessapp.utils.clear_screen_u import Clear
 
 
 class UpdateRankingController:
@@ -25,27 +27,34 @@ class UpdateRankingController:
         self.check_1 = True
 
     def __call__(self):
+        # CLEAR SCREEN.
+        Clear().screen()
+
         while self.check_1:
             self.view.welcome(self.player_inst)
+
             answer = input(">> ")
 
             # SHOW THE GLOBAL RANKING FOR HELP THE USER.
             if answer.upper() == 'C':
                 list_player_db = []
+
                 for player in self.db.players_table:
                     instance_player = self.db.retrieve_player(player)
                     list_player_db.append(instance_player)
+
                 list_player_db.sort(key=lambda x: int(x.ranking))
                 self.view.show_global_ranking(list_player_db)
+
             else:
                 try:
 
                     # CHECKING FOR POSITIVE VALUE.
                     if int(answer) > 0:
-                        if self.db.players_table.contains(where("ranking")
-                                                          == answer):
+                        if self.db.players_table.contains(where("ranking") == int(answer)):
                             self.view.ranking_exists()
                             self.check_2 = True
+
                             while self.check_2:
                                 self.view.ranking_exists_keep()
                                 answer_2 = input(">> ")
@@ -56,65 +65,54 @@ class UpdateRankingController:
                                     self.view.ranking_ok()
 
                                     # UPDATE RANKING IN DATABASE.
-                                    self.db.players_table.update(
-                                        {'ranking': answer},
-                                        ((where('family_name')
-                                          == self.player_inst.family_name)
-                                         & (where('first_name')
-                                            == self.player_inst.first_name)
-                                         &
-                                         (where('date_of_birth')
-                                          == self.player_inst.date_of_birth)))
+                                    self.db.players_table.update({'ranking': int(answer)}, (
+                                        (where('family_name') == self.player_inst.family_name) & (
+                                            where('first_name') == self.player_inst.first_name) & (
+                                            where('date_of_birth') == self.player_inst.date_of_birth)))
 
-                                    for inst_play in\
-                                            self.tournament.players_tournament:
+                                    for inst_play in self.tournament.players_tournament:
+                                        if inst_play.family_name == self.player_inst.family_name\
+                                                and inst_play.first_name == self.player_inst.first_name\
+                                                and inst_play.date_of_birth == self.player_inst.date_of_birth:
 
-                                        if inst_play.family_name\
-                                                == self.player_inst.\
-                                                family_name\
-                                                and inst_play.first_name\
-                                                == self.player_inst.first_name\
-                                                and inst_play.date_of_birth\
-                                                == self.player_inst.\
-                                                date_of_birth:
+                                            inst_play.ranking = int(answer)
 
-                                            inst_play.ranking = answer
                                         else:
                                             pass
                                     self.check_2 = False
                                     self.check_1 = False
+
                                 elif answer_2.upper() == 'N':
                                     self.check_2 = False
+
                                 else:
                                     self.view.error_yes_no()
+
                         else:
                             # UPDATE RANKING IN DATABASE.
                             self.view.ranking_ok_and_free()
-                            self.db.players_table.update(
-                                {'ranking': answer}, (
-                                        (where('family_name')
-                                         == self.player_inst.family_name)
-                                        & (where('first_name')
-                                            == self.player_inst.first_name)
-                                        & (where('date_of_birth') ==
-                                            self.player_inst.date_of_birth)))
+                            time.sleep(2)
+                            self.db.players_table.update({'ranking': int(answer)}, (
+                                (where('family_name') == self.player_inst.family_name) & (
+                                    where('first_name') == self.player_inst.first_name) & (
+                                    where('date_of_birth') == self.player_inst.date_of_birth)))
 
                             # UPDATE ALSO IN THE PLAYERS TOURNAMENT OF THE
                             # CURRENT_TOURNAMENT.
-                            for inst_play in self.tournament.\
-                                    players_tournament:
-                                if inst_play.family_name == \
-                                        self.player_inst.family_name \
-                                        and inst_play.first_name == \
-                                        self.player_inst.first_name \
-                                        and inst_play.date_of_birth == \
-                                        self.player_inst.date_of_birth:
-                                    inst_play.ranking = answer
+                            for inst_play in self.tournament.players_tournament:
+                                if inst_play.family_name == self.player_inst.family_name\
+                                        and inst_play.first_name == self.player_inst.first_name \
+                                        and inst_play.date_of_birth == self.player_inst.date_of_birth:
+                                    inst_play.ranking = int(answer)
+
                                 else:
                                     pass
+
                             self.check_1 = False
+
                     else:
                         self.view.positive_value_needed()
+
                 except ValueError:
                     self.view.positive_value_needed()
 
