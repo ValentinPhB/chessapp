@@ -1,6 +1,7 @@
 
 from chessapp.models.db_logic_m import DataBase
 from chessapp.controllers import menus_c
+from chessapp.utils.clear_screen_u import Clear
 
 
 class ContinueTournamentController:
@@ -14,6 +15,8 @@ class ContinueTournamentController:
         self.db = DataBase
 
     def __call__(self):
+        # CLEAR SCREEN.
+        Clear().screen()
 
         tournament = self.db.retrieve_tournament(self.dict_tournament)
 

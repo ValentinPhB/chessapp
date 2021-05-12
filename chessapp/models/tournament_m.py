@@ -8,8 +8,7 @@ class Tournament:
      Players() instances, Round() instance, Match() instances.
     """
 
-    def __init__(self, name=None, place=None, date_start=None,
-                 nb_total_round=DEFAULT_ROUND, control_time=None,
+    def __init__(self, name=None, place=None, date_start=None, nb_total_round=DEFAULT_ROUND, control_time=None,
                  description=None):
         self._name = name
         self._place = place
@@ -25,15 +24,7 @@ class Tournament:
         return str(vars(self))
 
     def __hash__(self):
-        return hash((self._name, self._place, self._date_start,
-                     self._date_end))
-
-    def __eq__(self, other):
-        if isinstance(other, type(self)):
-            return (self._name, self._place, self._date_start, self._date_end)\
-                   == (other.name, other.place,
-                       other.date_start, other.date_end)
-        return False
+        return hash((self._name, self._place, self._date_start, self._date_end))
 
     # 1 NAME.
     @property

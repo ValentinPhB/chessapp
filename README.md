@@ -1,4 +1,5 @@
-# chessapp
+# chessapp  -CENTRE ÉCHEC-
+
 ## Table of contents
 
 1. [Technologies](#1-technologies)
@@ -8,7 +9,10 @@
 	- [Setup for Unix](#a-setup-for-unix)
  	- [Setup for Windows](#b-setup-for-windows)
 5. [Advises for users](#5-advises-for-users)
-6. [Author](#6-author)
+6. [Flake8 HTML reports](#6-flake8-html-reports)
+	- [Unix](#a-unix)
+	- [Windows](#b-windows)
+7. [Author](#7-author)
 
 ## 1. Technologies
 
@@ -29,15 +33,33 @@ Project is created with Python 3.8.6.
 
 ## 2. General information
 
-||||||||NOT WRITE YET||||||||||
-||||||||NOT WRITE YET||||||||||
-||||||||NOT WRITE YET||||||||||
+Chessapp is an offline application to manage chess tournaments, save/load them from database and display reports.
+It supports data persistence, this application can be turn-off in a middle of tournament,
+the state of this tournament will be saved and continue next time the user run this application.
+
+Matches-making is based on Swiss-system tournament.
+
+DataBase contains 'tournaments' and 'players' tables.
+
+Global ranking can be reset during the tournament.
+
+
+Reports :
+- All players in data base (in alphabetic order).
+- All players in data base (in global-ranking order).
+  
+- All tournaments.
+	- All players for a chosen tournament (in alphabetic order). 
+	- All players for a chosen tournament (in tournament-ranking order).
+	- All rounds for a chosen tournament.
+	- All matches for a chosen tournament.
 
 ## 3. Installation Python
 
 Project is created with Python 3.8.6.
 
-First download Python.exe from https://www.python.org/downloads/ for the 3.8.6 Python version __or above__ and execute it. 
+First download Python.exe from https://www.python.org/downloads/ for the 3.8.6 Python version __or above__ and execute
+it. 
 After installing Python.exe please see the appropriate guide for your operating System.
 
 ## 4. Setup
@@ -48,7 +70,7 @@ Or if you use git, clone it from https://github.com/ValentinPhB/chessapp.git
 
 Create a virtual environment in "PATH" and install packages from requirements.txt.
 ```
-$ cd ../path/to/scp_bts_P2
+$ cd ../path/to/chessapp-main
 $ python3 -m venv env
 $ source env/bin/activate
 $ python3 -m pip install -U pip
@@ -67,7 +89,7 @@ Or if you use git, clone it from https://github.com/ValentinPhB/chessapp.git
 
 Then, using cmd, go to "PATH", create a virtual environment and install packages from requirements.txt.
 ```
-$ CD ../path/to/scp_bts_P2
+$ CD ../path/to/chessapp-main
 $ py -m venv env
 $ env\Scripts\activate.bat
 $ py -m pip install -U pip
@@ -81,11 +103,27 @@ $ python main.py
 
 ## 5. Advises for users
 
-||||||||NOT WRITE YET||||||||||
-||||||||NOT WRITE YET||||||||||
-||||||||NOT WRITE YET||||||||||
+This application will suggest you all possible action.
+Let yourself be guided.
 
+## 6. Flake8 HTML reports
 
-## 6. Author
+While this application is not running you can use flake8 (max_lenght == 119) and create HTML reports as follows :
+
+### A) *Unix*
+
+Go to the path 'chessapp-main' and execute this line :
+```
+$ flake8 ./chessapp/ --max-line-length=119 --ignore=E128 --format=html --htmldir=flake-report
+```
+
+### B) *Windows*
+Go to the path 'chessapp-main' and execute this line :
+```
+$ flake8 .\chessapp\ --max-line-length=119 --ignore=E128 --format=html --htmldir=flake-report
+```
+
+## 7. Author
+
 
 Valentin Pheulpin

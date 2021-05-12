@@ -10,13 +10,14 @@ class UpdateRankingView:
         print(f"\nEntrez le nouveau classement général pour :"
               f" '{instance_player.family_name} {instance_player.first_name}',"
               f" né(e) le : '{instance_player.date_of_birth}',"
-              f" classement général actuel :"
-              f" '{instance_player.ranking}'. \n")
+              f" classement général actuel : '{instance_player.ranking}'.")
+        print("Tapez 'C' pour revoir le classement global actuel. \n")
 
     # SHOW GLOBAL RANKING FROM DATA BASE.
     @staticmethod
     def show_global_ranking(player_db_sorted):
         print("\n\n VOICI LE CLASSEMENT GÉNÉRAL ACTUEL :\n\n")
+
         for player in player_db_sorted:
             print(f">'{player.family_name}, {player.first_name}'"
                   f" né(e) le : '{player.date_of_birth}',"
@@ -32,18 +33,15 @@ class UpdateRankingView:
 
     @staticmethod
     def ranking_exists():
-        print("> INFORMATION : Une joueur de la base de données a déjà"
-              " cette position dans le classement général.")
+        print("> INFORMATION : Une joueur de la base de données a déjà cette position dans le classement général.")
 
     @staticmethod
     def ranking_exists_keep():
-        print("> Vous voulez quand même sauvegarder ce classement général ? "
-              " oui 'O' , non 'N'.")
+        print("> Vous voulez quand même sauvegarder ce classement général ? oui 'O' , non 'N'.")
 
     @staticmethod
     def error_yes_no():
-        print("> INFORMATION :  Ici, oui 'O' ou non 'N' est attendue comme"
-              " réponse. \n")
+        print("> INFORMATION :  Ici, oui 'O' ou non 'N' est attendue comme réponse. \n")
 
     @staticmethod
     def positive_value_needed():
@@ -52,5 +50,4 @@ class UpdateRankingView:
     # SAVING MESSAGE.
     @staticmethod
     def saving_state():
-        print("\n\n\n\n>> L'ÉTAT ACTUEL DU TOURNOI EST SAUVEGARDÉ DANS"
-              " LA BASE DE DONNÉES <<")
+        print("\n\n\n\n>> L'ÉTAT ACTUEL DU TOURNOI EST SAUVEGARDÉ DANS LA BASE DE DONNÉES <<")
