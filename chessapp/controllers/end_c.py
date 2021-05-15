@@ -82,7 +82,7 @@ class EndTournamentController:
         # SAVING TOURNAMENT.
         self.db.save_tournament(self.tournament)
         self.view.saving_state()
-        time.sleep(3)
+        time.sleep(1)
         return menus_c.HomeMenuController()
 
     def _update_ranking_for_all(self, current_tournament):

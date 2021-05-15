@@ -15,14 +15,13 @@ class Match:
         self._result_2 = result_2
 
     def __repr__(self, *args, **kwargs):
-        return str(vars(self))
+        return str(self._match)
 
     def __hash__(self):
         return hash((self._first_p, self._second_p))
 
     def __eq__(self, other):
-        if isinstance(other, type(self)):
-            return (self._first_p, self._second_p) == (other.first_p, other.second_p)
+        return (self._first_p, self._second_p) == (other.first_p, other.second_p)
 
     @property
     def first_p(self):

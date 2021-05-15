@@ -2,6 +2,7 @@
 from chessapp.models.db_logic_m import DataBase
 from chessapp.controllers import menus_c
 from chessapp.utils.clear_screen_u import Clear
+from chessapp.controllers.rounds_c import RoundMakerController
 
 
 class ContinueTournamentController:
@@ -26,5 +27,8 @@ class ContinueTournamentController:
             return menus_c.AddPlayerMenuController(tournament)
 
         # IF YES.
-        elif len(tournament.players_tournament) == 8:
+        elif len(tournament.players_tournament) == 8 and len(tournament.all_round) == 0:
+            return RoundMakerController(tournament)
+
+        elif len(tournament.players_tournament) == 8 and len(tournament.all_round) > 0:
             return menus_c.SuggestRankingMenuController(tournament)

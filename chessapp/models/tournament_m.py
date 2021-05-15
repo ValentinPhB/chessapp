@@ -107,6 +107,23 @@ class Tournament:
     def description(self, value):
         self._description = value
 
+    # 10 MATCHES ALREADY.
+    @property
+    def matches_already(self):
+        return self._matches_already
+
+    @matches_already.setter
+    def matches_already(self, value):
+        self._name = value
+
+    # ADD MATCHES IN SELF._MATCHES_ALREADY
+    def add_matches_already(self, new):
+        self._matches_already.append(new)
+
+    # RESET MATCHES IN SELF._MATCHES_ALREADY
+    def reset_matches_already(self):
+        self._matches_already = []
+
     # ADD PLAYER TO SELF._PLAYERS_TOURNAMENT
     def add_player(self, new):
         self._players_tournament.append(new)

@@ -61,7 +61,7 @@ class DataBase:
 
                 serialized_second_p = {"family_name": second_p.family_name,
                                        "first_name": second_p.first_name,
-                                       "date_of_birth": first_p.date_of_birth,
+                                       "date_of_birth": second_p.date_of_birth,
                                        "gender": second_p.gender,
                                        "ranking": second_p.ranking,
                                        "result": second_p.result,
@@ -89,7 +89,8 @@ class DataBase:
                 "all_round": dicts_rounds,
                 "players_tournament": dicts_players,
                 "control_time": tournament.control_time,
-                "description": tournament.description}
+                "description": tournament.description,
+                }
 
     def save_tournament(self, tournament):
         # SAVING TOURNAMENT() IN TINY DATA BASE.
@@ -203,6 +204,7 @@ class DataBase:
             player_instance.point = element_3["point"]
             players_tournament.append(player_instance)
         continue_tournament.players_tournament = players_tournament
+
         return continue_tournament
 
     @staticmethod

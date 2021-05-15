@@ -17,7 +17,11 @@ class Player:
         return str(vars(self))
 
     def __hash__(self):
-        return hash((self._family_name, self._first_name, self._date_of_birth, self._ranking, self._point))
+        return hash((self._family_name, self._first_name, self._date_of_birth, self._gender))
+
+    def __eq__(self, other):
+        return ((self._family_name, self._first_name, self._date_of_birth,
+                 self._gender) == (other.family_name, other.first_name, other.date_of_birth, other.gender))
 
     # 1 FAMILY NAME.
     @property

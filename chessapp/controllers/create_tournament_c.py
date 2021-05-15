@@ -234,7 +234,7 @@ class CreateTournamentController:
         # SAVING STATE IN DATA BASE.
         self.db.save_tournament(self.tournament)
         self.view.saving_state()
-        time.sleep(2)
+        time.sleep(1)
 
         return menus_c.AddPlayerMenuController(self.tournament)
 

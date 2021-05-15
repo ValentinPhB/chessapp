@@ -206,8 +206,7 @@ class AddNewPlayerController:
 
             if self.db.players_table.contains((where('family_name') == self.player.family_name) & (
                     where('first_name') == self.player.first_name) & (
-                    where('date_of_birth') == self.player.date_of_birth) & (
-                    where('gender') == self.player.gender)):
+                    where('date_of_birth') == self.player.date_of_birth)):
 
                 self.view.already_in_db()
                 self.view.welcome_already()
@@ -221,7 +220,7 @@ class AddNewPlayerController:
         self.db.save_tournament(self.tournament)
         self.view.saving_state()
         self.view.saving_player()
-        time.sleep(2)
+        time.sleep(1)
 
         return menus_c.AddPlayerMenuController(self.tournament)
 

@@ -69,7 +69,7 @@ class UpdateResultsController:
         # SET DATE_ENDS FOR ROUND.
         self.tournament.all_round[-1].time_ends = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         self.view.auto_add_ends()
-        time.sleep(2)
+        time.sleep(1)
 
         # SAVE ACTUAL STATE.
         self.db.save_tournament(self.tournament)

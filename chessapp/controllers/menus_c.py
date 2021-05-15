@@ -278,7 +278,7 @@ class RoundMakingMenuController:
         self.view.saving_state()
 
         # ADD MENUS.
-        self.menu.add("auto", "Assigner des résultats aux matchs ci-dessus.", UpdateResultsController(self.tournament))
+        self.menu.add("auto", "Assigner des résultats aux matchs générés.", UpdateResultsController(self.tournament))
         self.menu.add("*", "Afficher le classement actuel du tournoi.", None)
         self.menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self.tournament))
 
