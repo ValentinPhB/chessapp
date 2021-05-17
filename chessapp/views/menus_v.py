@@ -88,7 +88,7 @@ class MenuView:
         print("\n> INFORMATION : Il n'y a actuellement aucun joueur dans la base de données "
               "que vous pourriez ajouter.")
         print("> Tout joueur déjà ajouté à ce présent tournoi ne peut être affiché.")
-        print("> Choisissez la clé '1' pour créer un nouveau joueur et l'enregistrer dans la base de données.")
+        print("> Choisissez la clé '2' pour créer un nouveau joueur et l'enregistrer dans la base de données.")
 
     @staticmethod
     def error_entry():

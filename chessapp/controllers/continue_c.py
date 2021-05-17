@@ -12,14 +12,14 @@ class ContinueTournamentController:
     """
 
     def __init__(self, dict_tournament):
-        self.dict_tournament = dict_tournament
-        self.db = DataBase
+        self._dict_tournament = dict_tournament
+        self._db = DataBase
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
-        tournament = self.db.retrieve_tournament(self.dict_tournament)
+        tournament = self._db.retrieve_tournament(self._dict_tournament)
 
         # CHECKING IF ALL PLAYERS HAVE BEEN ADDED.
         # IF NOT YET.

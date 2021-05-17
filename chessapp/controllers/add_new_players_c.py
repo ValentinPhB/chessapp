@@ -21,80 +21,80 @@ class AddNewPlayerController:
     """
 
     def __init__(self, current_tournament):
-        self.player = Player()
-        self.view = AddPlayersViews()
-        self.check_1 = True
-        self.check_2 = True
-        self.check_3 = True
-        self.tournament = current_tournament
-        self.db = DataBase()
+        self._player = Player()
+        self._view = AddPlayersViews()
+        self._check_1 = True
+        self._check_2 = True
+        self._check_3 = True
+        self._tournament = current_tournament
+        self._db = DataBase()
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # FIRST MESSAGE.
-        self.view.welcome()
+        self._view.welcome()
 
         # CHECKING IF PLAYER ALREADY IN DATA BASE.
-        while self.check_3:
+        while self._check_3:
 
             # FAMILY NAME.
-            self.view.player_family_name()
+            self._view.player_family_name()
 
-            while self.check_1:
+            while self._check_1:
                 answer = input(">> ")
 
                 if answer.isalpha():
                     test = answer.replace(" ", "")
 
                     if len(answer) == 0 or len(test) == 0:
-                        self.view.special_answer()
+                        self._view.special_answer()
 
                     else:
-                        self.player.family_name = answer.upper()
-                        self.check_1 = False
+                        self._player.family_name = answer.upper()
+                        self._check_1 = False
 
                 else:
-                    self.view.special_answer()
+                    self._view.special_answer()
 
-            self.check_1 = True
+            self._check_1 = True
 
             # CLEAR SCREEN.
             Clear().screen()
 
             # FIRST MESSAGE.
-            self.view.welcome()
+            self._view.welcome()
 
             # FIRST NAME.
-            self.view.player_first_name()
+            self._view.player_first_name()
 
-            while self.check_1:
+            while self._check_1:
                 answer = input(">> ")
                 if answer.isalpha():
                     test = answer.replace(" ", "")
 
                     if len(answer) == 0 or len(test) == 0:
-                        self.view.special_answer()
+                        self._view.special_answer()
 
                     else:
-                        self.player.first_name = answer.capitalize()
-                        self.check_1 = False
+                        self._player.first_name = answer.capitalize()
+                        self._check_1 = False
 
                 else:
-                    self.view.special_answer()
+                    self._view.special_answer()
 
-            self.check_1 = True
+            self._check_1 = True
 
             # CLEAR SCREEN.
             Clear().screen()
 
             # FIRST MESSAGE.
-            self.view.welcome()
+            self._view.welcome()
 
             # DATE OF BIRTH.
-            while self.check_1:
-                self.view.player_date_birth()
+            while self._check_1:
+                self._view.player_date_birth()
 
                 day = self._loop_date("DU JOUR DE NAISSANCE", val_max=31, _format="dd")
 
@@ -104,157 +104,157 @@ class AddNewPlayerController:
 
                 try:
                     datetime(int(year), int(month), int(day))
-                    self.player.date_of_birth = f'{day}/{month}/{year}'
-                    self.check_1 = False
+                    self._player.date_of_birth = f'{day}/{month}/{year}'
+                    self._check_1 = False
 
                 except ValueError:
-                    self.view.wrong_dates()
-                    self.check_1 = True
+                    self._view.wrong_dates()
+                    self._check_1 = True
 
-            self.check_1 = True
+            self._check_1 = True
 
             # CLEAR SCREEN.
             Clear().screen()
 
             # FIRST MESSAGE.
-            self.view.welcome()
+            self._view.welcome()
 
             # GENDER.
-            self.view.player_gender_1()
+            self._view.player_gender_1()
 
-            while self.check_1:
-                self.view.player_gender_2()
+            while self._check_1:
+                self._view.player_gender_2()
 
                 answer = input(">> ")
                 if answer == "1":
-                    self.player.gender = 'Homme'
-                    self.check_1 = False
+                    self._player.gender = 'Homme'
+                    self._check_1 = False
 
                 elif answer == "2":
-                    self.player.gender = 'Femme'
-                    self.check_1 = False
+                    self._player.gender = 'Femme'
+                    self._check_1 = False
 
                 else:
-                    self.view.error_gender()
+                    self._view.error_gender()
 
-            self.check_1 = True
+            self._check_1 = True
 
             # CLEAR SCREEN.
             Clear().screen()
 
             # FIRST MESSAGE.
-            self.view.welcome()
+            self._view.welcome()
 
             # RANKING.
-            self.view.player_ranking_1()
+            self._view.player_ranking_1()
 
-            while self.check_1:
-                self.view.player_ranking_2()
-                self.view.ranking_suggestion(self.db.players_table)
+            while self._check_1:
+                self._view.player_ranking_2()
+                self._view.ranking_suggestion(self._db.players_table)
 
                 answer = input(">> ")
                 if answer.upper() == 'C':
                     # CLEAR SCREEN.
                     Clear().screen()
 
-                    if len(self.db.players_table) > 0:
+                    if len(self._db.players_table) > 0:
                         list_player_db = []
-                        for player in self.db.players_table:
-                            instance_player = self.db.retrieve_player(player)
+                        for player in self._db.players_table:
+                            instance_player = self._db.retrieve_player(player)
                             list_player_db.append(instance_player)
                         list_player_db.sort(key=lambda x: x.ranking)
-                        self.view.show_global_ranking(list_player_db)
+                        self._view.show_global_ranking(list_player_db)
 
                     else:
-                        self.view.no_players_db()
+                        self._view.no_players_db()
                 else:
 
                     try:
                         if int(answer) > 0:
-                            if self.db.players_table.contains(where("ranking") == int(answer)):
-                                self.view.ranking_exists()
-                                self.check_2 = True
-                                while self.check_2:
-                                    self.view.ranking_exists_keep()
+                            if self._db.players_table.contains(where("ranking") == int(answer)):
+                                self._view.ranking_exists()
+                                self._check_2 = True
+                                while self._check_2:
+                                    self._view.ranking_exists_keep()
                                     answer_2 = input(">> ")
                                     if answer_2.upper() == 'O':
-                                        self.player.ranking = int(answer)
-                                        self.check_2 = False
-                                        self.check_1 = False
+                                        self._player.ranking = int(answer)
+                                        self._check_2 = False
+                                        self._check_1 = False
 
                                     elif answer_2.upper() == 'N':
-                                        self.check_2 = False
+                                        self._check_2 = False
 
                                     else:
-                                        self.view.error_yes_no()
+                                        self._view.error_yes_no()
 
                             else:
-                                self.view.ranking_ok()
-                                self.player.ranking = int(answer)
-                                self.check_1 = False
+                                self._view.ranking_ok()
+                                self._player.ranking = int(answer)
+                                self._check_1 = False
 
                         else:
-                            self.view.positive_value_needed()
+                            self._view.positive_value_needed()
 
                     except ValueError:
-                        self.view.positive_value_needed()
+                        self._view.positive_value_needed()
 
             # CLEAR SCREEN.
             Clear().screen()
 
-            self.check_1 = True
+            self._check_1 = True
 
-            if self.db.players_table.contains((where('family_name') == self.player.family_name) & (
-                    where('first_name') == self.player.first_name) & (
-                    where('date_of_birth') == self.player.date_of_birth)):
+            if self._db.players_table.contains((where('family_name') == self._player.family_name) & (
+                    where('first_name') == self._player.first_name) & (
+                    where('date_of_birth') == self._player.date_of_birth)):
 
-                self.view.already_in_db()
-                self.view.welcome_already()
-                return menus_c.AddPlayerMenuController(self.tournament)
+                self._view.already_in_db()
+                self._view.welcome_already()
+                return menus_c.AddPlayerMenuController(self._tournament)
 
             else:
-                self.check_3 = False
+                self._check_3 = False
 
-        self.tournament.add_player(self.player)
-        self.db.save_player(self.player)
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
-        self.view.saving_player()
-        time.sleep(1)
+        self._tournament.add_player(self._player)
+        self._db.save_player(self._player)
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
+        self._view.saving_player()
+        time.sleep(2)
 
-        return menus_c.AddPlayerMenuController(self.tournament)
+        return menus_c.AddPlayerMenuController(self._tournament)
 
     # Optimisation format date_of_birth.
     def _loop_date(self, d_m_y, val_max, _format, gender=""):
-        self.check_2 = True
+        self._check_2 = True
         needed_var = 0
-        self.view.loop_date_birth(d_m_y, gender, _format, val_max)
+        self._view.loop_date_birth(d_m_y, gender, _format, val_max)
 
-        while self.check_2:
+        while self._check_2:
             inp_d_m_y = input(">> ")
             try:
                 if 10 <= int(inp_d_m_y) <= val_max:
                     needed_var = str(inp_d_m_y)
-                    self.check_2 = False
+                    self._check_2 = False
 
                 elif 9 >= int(inp_d_m_y) >= 1 == len(inp_d_m_y):
                     needed_var = f"0{str(inp_d_m_y)}"
-                    self.check_2 = False
+                    self._check_2 = False
 
                 elif 9 >= int(inp_d_m_y) >= 1 and len(inp_d_m_y) == 2:
                     needed_var = str(inp_d_m_y)
-                    self.check_2 = False
+                    self._check_2 = False
 
                 else:
                     # CLEAR SCREEN.
                     Clear().screen()
 
-                    self.view.error_loop_date_birth(val_max, _format)
+                    self._view.error_loop_date_birth(val_max, _format)
 
             except ValueError:
                 # CLEAR SCREEN.
                 Clear().screen()
-                self.view.error_loop_date_birth(val_max, _format)
+                self._view.error_loop_date_birth(val_max, _format)
 
         return needed_var
 
@@ -267,14 +267,14 @@ class AddPlayerFromDataController:
     """
 
     def __init__(self, current_tournament, data_player):
-        self.tournament = current_tournament
-        self.data_player = data_player
-        self.db = DataBase()
+        self._tournament = current_tournament
+        self._data_player = data_player
+        self._db = DataBase()
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
-        player = self.db.retrieve_player(self.data_player)
-        self.tournament.add_player(player)
-        return menus_c.AddPlayerMenuController(self.tournament)
+        player = self._db.retrieve_player(self._data_player)
+        self._tournament.add_player(player)
+        return menus_c.AddPlayerMenuController(self._tournament)

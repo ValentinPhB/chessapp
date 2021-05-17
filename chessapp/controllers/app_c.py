@@ -9,7 +9,7 @@ class ApplicationController:
     """
 
     def __init__(self):
-        self.controller = None
+        self._controller = None
 
     def start(self):
         """
@@ -17,6 +17,6 @@ class ApplicationController:
          It start with redirect the user to the HomeMenuController.
         """
 
-        self.controller = HomeMenuController()
-        while self.controller:
-            self.controller = self.controller()
+        self._controller = HomeMenuController()
+        while self._controller:
+            self._controller = self._controller()

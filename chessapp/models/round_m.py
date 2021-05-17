@@ -10,8 +10,8 @@ class Round:
     """
 
     def __init__(self, current_tournament_all_round, nb_total_round):
-        self.nb_total_round_tournament = len(current_tournament_all_round)
-        self._next_round = self.nb_total_round_tournament + 1
+        self._nb_total_round_tournament = len(current_tournament_all_round)
+        self._next_round = self._nb_total_round_tournament + 1
         self._name = str(f"ROUND {self._next_round}")
         self._nb_total_round = nb_total_round
         self._matches = None

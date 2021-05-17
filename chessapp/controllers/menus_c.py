@@ -1,3 +1,4 @@
+import time
 
 from tinydb import where
 
@@ -24,12 +25,12 @@ class HomeMenuController:
     """
 
     def __init__(self):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.user_choice = None
-        self.check_1 = True
-        self.tournament = Tournament()
-        self.db = DataBase()
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._check_1 = True
+        self._tournament = Tournament()
+        self._db = DataBase()
 
     def __call__(self):
         # CLEAR SCREEN.
@@ -37,33 +38,33 @@ class HomeMenuController:
 
         # ADD MENUS.
         # IF A TOURNAMENT IN DATA BASE IS NOT FINISHED.
-        if self.db.tournaments_table.contains(where('date_end') == str("None")):
-            self.menu.add("auto", "Continuer le précédent tournoi non-terminé.",
-                          ContinueMenuController(self.tournament))
+        if self._db.tournaments_table.contains(where('date_end') == str("None")):
+            self._menu.add("auto", "Continuer le précédent tournoi non-terminé.",
+                           ContinueMenuController(self._tournament))
 
-            self.menu.add("auto", "Afficher des rapports.", ReportMenuController())
-            self.menu.add("Q", "Quitter l'application.", EndScreenController())
+            self._menu.add("auto", "Afficher des rapports.", ReportMenuController())
+            self._menu.add("Q", "Quitter l'application.", EndScreenController())
 
         else:
-            self.menu.add("auto", "Créer un tournoi.", CreateTournamentController(self.tournament))
-            self.menu.add("auto", "Afficher des rapports.", ReportMenuController())
-            self.menu.add("Q", "Quitter l'application.", EndScreenController())
+            self._menu.add("auto", "Créer un tournoi.", CreateTournamentController(self._tournament))
+            self._menu.add("auto", "Afficher des rapports.", ReportMenuController())
+            self._menu.add("Q", "Quitter l'application.", EndScreenController())
 
         # DISPLAY MENU AND GET USER CHOICE.
-        self.view.welcome_home()
+        self._view.welcome_home()
 
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu:
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu:
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
 
             else:
-                self.view.error_entry()
+                self._view.error_entry()
 
-        return self.user_choice.handler
+        return self._user_choice.handler
 
 
 class AddPlayerMenuController:
@@ -73,44 +74,46 @@ class AddPlayerMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.user_choice = None
-        self.check_1 = True
-        self.tournament = current_tournament
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._check_1 = True
+        self._tournament = current_tournament
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # ADD MENUS.
-        self.menu.add("auto", "Choisir un joueur dans la base de données.", PlayerDataMenuController(self.tournament))
-        self.menu.add("auto", "Ajouter un nouveau joueur au tournoi et dans la base de données.",
-                      AddNewPlayerController(self.tournament))
+        self._menu.add("auto", "Choisir un joueur dans la base de données.",
+                       PlayerDataMenuController(self._tournament))
 
-        self.menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self.tournament))
+        self._menu.add("auto", "Ajouter un nouveau joueur au tournoi et dans la base de données.",
+                       AddNewPlayerController(self._tournament))
+
+        self._menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self._tournament))
 
         # CHECKING IF NUMBER PLAYER < 8 TO REDIRECT PROPERLY.
-        players_list = self.tournament.players_tournament
+        players_list = self._tournament.players_tournament
         counting = len(players_list)
         if counting < 8:
-            self.view.welcome_add_player(counting)
+            self._view.welcome_add_player(counting)
 
-            while self.check_1:
-                self.view.user_choice()
+            while self._check_1:
+                self._view.user_choice()
                 answer = input(">> ")
-                if answer.upper() in self.menu:
-                    self.user_choice = self.menu[answer.upper()]
-                    self.check_1 = False
+                if answer.upper() in self._menu:
+                    self._user_choice = self._menu[answer.upper()]
+                    self._check_1 = False
 
                 else:
-                    self.view.error_entry()
-                    self.view.repeat_nbr_remaining(counting)
+                    self._view.error_entry()
+                    self._view.repeat_nbr_remaining(counting)
 
-            return self.user_choice.handler
+            return self._user_choice.handler
 
         else:
-            return RoundMakerController(self.tournament)
+            return RoundMakerController(self._tournament)
 
 
 class PlayerDataMenuController:
@@ -121,12 +124,12 @@ class PlayerDataMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.user_choice = None
-        self.check_1 = True
-        self.tournament = current_tournament
-        self.db = DataBase()
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._check_1 = True
+        self._tournament = current_tournament
+        self._db = DataBase()
 
     def __call__(self):
         # CLEAR SCREEN.
@@ -135,19 +138,19 @@ class PlayerDataMenuController:
         # SELECTING PLAYERS FROM DATA AND SHOW ONLY THOSE
         # WHO ARE NOT ALREADY CHOSEN.
         # ADDING EVERY PLAYER AS MENUS.
-        number_player = self.db.players_table.all()
+        number_player = self._db.players_table.all()
         if len(number_player) >= 1:
             player_to_show = sorted(number_player, key=lambda k: k['ranking'])
 
-            if len(self.tournament.players_tournament) > 0:
-                for player_instance in self.tournament.players_tournament:
+            if len(self._tournament.players_tournament) > 0:
+                for player_instance in self._tournament.players_tournament:
 
                     family_name = player_instance.family_name
                     first_name = player_instance.first_name
                     date_of_birth = player_instance.date_of_birth
                     ranking = player_instance.ranking
 
-                    if self.db.players_table.contains((where('family_name') == family_name) & (
+                    if self._db.players_table.contains((where('family_name') == family_name) & (
                             where('first_name') == first_name) & (
                             where('date_of_birth') == date_of_birth) & (
                             where('ranking') == ranking)):
@@ -170,37 +173,39 @@ class PlayerDataMenuController:
             # 'ADD PLAYER MENU CONTROLLER'.
             if len(player_to_show) != 0:
                 for players in player_to_show:
-                    self.menu.add("auto", f"    NOM DE FAMILLE : '{players['family_name']}',"
-                                          f" PRÉNOM : '{players['first_name']}',"
-                                          f" DATE DE NAISSANCE : '{players['date_of_birth']}',"
-                                          f" CLASSEMENT GÉNÉRAL : '{players['ranking']}'.",
+                    self._menu.add("auto", f"    NOM DE FAMILLE : '{players['family_name']}',"
+                                           f" PRÉNOM : '{players['first_name']}',"
+                                           f" DATE DE NAISSANCE : '{players['date_of_birth']}',"
+                                           f" CLASSEMENT GÉNÉRAL : '{players['ranking']}'.",
 
-                                  AddPlayerFromDataController(self.tournament, players))
+                                   AddPlayerFromDataController(self._tournament, players))
 
-                self.menu.add("\nQ", "  REVENIR AU MENU D'AJOUT DES JOUEURS.",
-                              AddPlayerMenuController(self.tournament))
+                self._menu.add("\nQ", "  REVENIR AU MENU D'AJOUT DES JOUEURS.",
+                               AddPlayerMenuController(self._tournament))
 
-                self.view.welcome_add_from_data()
+                self._view.welcome_add_from_data()
 
-                while self.check_1:
-                    self.view.user_choice()
+                while self._check_1:
+                    self._view.user_choice()
                     answer = input(">> ")
-                    if answer.upper() in self.menu:
-                        self.user_choice = self.menu[answer.upper()]
-                        self.check_1 = False
+                    if answer.upper() in self._menu:
+                        self._user_choice = self._menu[answer.upper()]
+                        self._check_1 = False
 
                     else:
-                        self.view.error_entry()
+                        self._view.error_entry()
 
-                return self.user_choice.handler
+                return self._user_choice.handler
 
             else:
-                self.view.no_players_db()
-                return AddPlayerMenuController(self.tournament)
+                self._view.no_players_db()
+                time.sleep(3)
+                return AddPlayerMenuController(self._tournament)
 
         else:
-            self.view.no_players_db()
-            return AddPlayerMenuController(self.tournament)
+            self._view.no_players_db()
+            time.sleep(3)
+            return AddPlayerMenuController(self._tournament)
 
 
 class ContinueMenuController:
@@ -209,12 +214,12 @@ class ContinueMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.user_choice = None
-        self.check_1 = True
-        self.db = DataBase()
-        self.tournament = current_tournament
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._check_1 = True
+        self._db = DataBase()
+        self._tournament = current_tournament
 
     def __call__(self):
         # CLEAR SCREEN.
@@ -224,38 +229,39 @@ class ContinueMenuController:
         # IN THAT CASE IT WILL DISPLAY IT.
         # OTHERWISE IT WILL INFORM THE USER AND REDIRECT IT TO
         # 'HOME MENU CONTROLLER'.
-        if len(self.db.tournaments_table) >= 1:
-            for _dict in self.db.tournaments_table:
+        if len(self._db.tournaments_table) >= 1:
+            for _dict in self._db.tournaments_table:
                 if _dict['date_end'] == "None":
-                    self.menu.add("auto", f"    NOM : '{_dict['name']}',"
-                                  f" LIEU : '{_dict['place']}',"
-                                  f" DATE DE DEBUT :"f" '{_dict['date_start']}',"
-                                  f"ROUND(S) JOUÉ(S) : '{len(_dict['all_round'])}' sur '{_dict['nb_total_round']}',"
-                                  f" NOMBRE DE JOUEURS : '{len(_dict['players_tournament'])}'"
-                                  f" CONTRÔLE DE TEMPS : '{_dict['control_time']}'.",
-                                  ContinueTournamentController(_dict))
+                    self._menu.add("auto", f"    NOM : '{_dict['name']}',"
+                                   f" LIEU : '{_dict['place']}',"
+                                   f" DATE DE DEBUT :"f" '{_dict['date_start']}',"
+                                   f"ROUND(S) JOUÉ(S) : '{len(_dict['all_round'])}' sur '{_dict['nb_total_round']}',"
+                                   f" NOMBRE DE JOUEURS : '{len(_dict['players_tournament'])}'"
+                                   f" CONTRÔLE DE TEMPS : '{_dict['control_time']}'.",
+                                   ContinueTournamentController(_dict))
 
                 else:
                     pass
 
-            self.menu.add("Q", "QUITTER ET REVENIR AU MENU D'ACCUEIL.", HomeMenuController())
+            self._menu.add("Q", "QUITTER ET REVENIR AU MENU D'ACCUEIL.", HomeMenuController())
 
-            self.view.welcome_continue()
+            self._view.welcome_continue()
 
-            while self.check_1:
-                self.view.user_choice()
+            while self._check_1:
+                self._view.user_choice()
                 answer = input(">> ")
-                if answer.upper() in self.menu:
-                    self.user_choice = self.menu[answer.upper()]
-                    self.check_1 = False
+                if answer.upper() in self._menu:
+                    self._user_choice = self._menu[answer.upper()]
+                    self._check_1 = False
 
                 else:
-                    self.view.error_entry()
+                    self._view.error_entry()
 
-            return self.user_choice.handler
+            return self._user_choice.handler
 
         else:
-            self.view.no_tournament_db()
+            self._view.no_tournament_db()
+            time.sleep(3)
             return HomeMenuController()
 
 
@@ -265,39 +271,39 @@ class RoundMakingMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.user_choice = None
-        self.check_1 = True
-        self.tournament = current_tournament
-        self.db = DataBase()
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._check_1 = True
+        self._tournament = current_tournament
+        self._db = DataBase()
 
     def __call__(self):
         # SAVING STATE.
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
 
         # ADD MENUS.
-        self.menu.add("auto", "Assigner des résultats aux matchs générés.", UpdateResultsController(self.tournament))
-        self.menu.add("*", "Afficher le classement actuel du tournoi.", None)
-        self.menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self.tournament))
+        self._menu.add("auto", "Assigner des résultats aux matchs générés.", UpdateResultsController(self._tournament))
+        self._menu.add("*", "Afficher le classement actuel du tournoi.", None)
+        self._menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self._tournament))
 
         # DISPLAY MENU AND GET USER CHOICE.
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu and answer.upper() != '*':
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu and answer.upper() != '*':
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
             elif answer == '*':
-                self.view.show_ranking_tournament(self.tournament.players_tournament)
-                return RoundMakingMenuController(self.tournament)
+                self._view.show_ranking_tournament(self._tournament.players_tournament)
+                return RoundMakingMenuController(self._tournament)
 
             else:
-                self.view.error_entry()
+                self._view.error_entry()
 
-        return self.user_choice.handler
+        return self._user_choice.handler
 
 
 class SuggestRankingMenuController:
@@ -307,44 +313,45 @@ class SuggestRankingMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.tournament = current_tournament
-        self.check_1 = True
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._tournament = current_tournament
+        self._check_1 = True
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # ADD MENUS.
-        precedent_round = self.tournament.all_round[-1]
+        precedent_round = self._tournament.all_round[-1]
         if precedent_round.matches[0].result_1 == precedent_round.matches[0].result_2 == 0.0:
-            return RoundMakerController(self.tournament)
+            return RoundMakerController(self._tournament)
 
-        elif int(self.tournament.nb_total_round) == len(self.tournament.all_round) and (
+        elif int(self._tournament.nb_total_round) == len(self._tournament.all_round) and (
                 precedent_round.matches[0].result_1 != precedent_round.matches[0].
                 result_2 or precedent_round.matches[0].result_1 == precedent_round.matches[0].result_2 == 0.5):
 
-            return EndTournamentController(self.tournament)
+            return EndTournamentController(self._tournament)
 
         else:
-            self.menu.add("auto", "Générer les prochains matchs.", RoundMakerController(self.tournament))
-            self.menu.add("auto", "Changer le classement d'un joueur.", UpdateRankingMenuController(self.tournament))
-            self.menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self.tournament))
+            self._menu.add("auto", "Générer les prochains matchs.", RoundMakerController(self._tournament))
+            self._menu.add("auto", "Changer le classement d'un joueur.", UpdateRankingMenuController(self._tournament))
+            self._menu.add("Q", "Sauvegarder et quitter l'application.", EndScreenSaveController(self._tournament))
 
         # DISPLAY MENU AND GET USER CHOICE.
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu:
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu:
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
 
             else:
-                self.view.error_entry()
+                self._view.error_entry()
 
-        return self.user_choice.handler
+        return self._user_choice.handler
 
 
 class UpdateRankingMenuController:
@@ -354,48 +361,49 @@ class UpdateRankingMenuController:
     """
 
     def __init__(self, current_tournament):
-        self.menu = Menu()
-        self.db = DataBase()
-        self.view = MenuView(self.menu)
-        self.tournament = current_tournament
-        self.check_1 = True
+        self._menu = Menu()
+        self._db = DataBase()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._tournament = current_tournament
+        self._check_1 = True
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # WELCOME MESSAGE.
-        self.view.welcome_update_global_ranking()
+        self._view.welcome_update_global_ranking()
 
         # ADD MENUS.
         list_player_db = []
-        for player in self.db.players_table:
-            instance_player = self.db.retrieve_player(player)
+        for player in self._db.players_table:
+            instance_player = self._db.retrieve_player(player)
             list_player_db.append(instance_player)
 
         list_player_db.sort(key=lambda x: int(x.ranking))
 
         for player_instance in list_player_db:
-            self.menu.add("auto", f"'{player_instance.family_name} {player_instance.first_name}',"
-                          f" né(e) le : '{player_instance.date_of_birth}',"
-                          f" classement actuel : '{player_instance.ranking}'.",
-                          UpdateRankingController(self.tournament, player_instance))
+            self._menu.add("auto", f"'{player_instance.family_name} {player_instance.first_name}',"
+                           f" né(e) le : '{player_instance.date_of_birth}',"
+                           f" classement actuel : '{player_instance.ranking}'.",
+                           UpdateRankingController(self._tournament, player_instance))
 
-        self.menu.add("Q", "Revenir au précédent menu.", SuggestRankingMenuController(self.tournament))
+        self._menu.add("Q", "Revenir au précédent menu.", SuggestRankingMenuController(self._tournament))
 
         # DISPLAY MENU AND GET USER CHOICE.
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu:
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu:
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
 
             else:
-                self.view.error_entry()
+                self._view.error_entry()
 
-        return self.user_choice.handler
+        return self._user_choice.handler
 
 
 class ReportMenuController:
@@ -403,40 +411,42 @@ class ReportMenuController:
     This controller asks the user to know witch reports he wants.
     """
     def __init__(self):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.db = DataBase()
-        self.check_1 = True
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._db = DataBase()
+        self._check_1 = True
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # NO PLAYERS AND TOURNAMENT IN DATA.
-        if len(self.db.players_table) == len(self.db.tournaments_table) == 0:
-            self.view.none_data()
+        if len(self._db.players_table) == len(self._db.tournaments_table) == 0:
+            self._view.none_data()
+            time.sleep(3)
             return HomeMenuController()
 
         else:
-            self.view.welcome_reports()
+            self._view.welcome_reports()
 
-            self.menu.add("auto", "Joueurs enregistrés dans la base de données.", ReportPlayerController(self.db))
-            self.menu.add("auto", "Tournois enregistrés dans la base de données.", ReportTournamentMenuController())
-            self.menu.add("Q", "Revenir au précédent menu.", HomeMenuController())
+            self._menu.add("auto", "Joueurs enregistrés dans la base de données.", ReportPlayerController(self._db))
+            self._menu.add("auto", "Tournois enregistrés dans la base de données.", ReportTournamentMenuController())
+            self._menu.add("Q", "Revenir au précédent menu.", HomeMenuController())
 
         # DISPLAY MENU AND GET USER CHOICE.
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu:
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu:
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
 
             else:
-                self.view.error_entry()
+                self._view.error_entry()
 
-        return self.user_choice.handler
+        return self._user_choice.handler
 
 
 class ReportTournamentMenuController:
@@ -445,39 +455,40 @@ class ReportTournamentMenuController:
      with selecting the key of the element.
     """
     def __init__(self):
-        self.menu = Menu()
-        self.view = MenuView(self.menu)
-        self.db = DataBase()
-        self.check_1 = True
+        self._menu = Menu()
+        self._view = MenuView(self._menu)
+        self._user_choice = None
+        self._db = DataBase()
+        self._check_1 = True
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
-        self.view.welcome_tournament_reports()
+        self._view.welcome_tournament_reports()
 
-        for dict_tournament in self.db.tournaments_table:
-            self.menu.add("auto", f"    NOM : '{dict_tournament['name']}',"
-                          f" LIEU : '{dict_tournament['place']}',"
-                          f" DATE DE DEBUT : '{dict_tournament['date_start']}', "
-                          f" DATE DE FIN : '{dict_tournament['date_end']}',"
-                          f" ROUND(S) JOUÉ(S) : '{len(dict_tournament['all_round'])}' sur"
-                                  f" '{dict_tournament['nb_total_round']}',"
-                          f" NOMBRE DE JOUEURS : '{len(dict_tournament['players_tournament'])}'"
-                          f" CONTRÔLE DE TEMPS :'{dict_tournament['control_time']}'.",
-                          ReportTournamentController(self.db, dict_tournament))
+        for dict_tournament in self._db.tournaments_table:
+            self._menu.add("auto", f"    NOM : '{dict_tournament['name']}',"
+                           f" LIEU : '{dict_tournament['place']}',"
+                           f" DATE DE DEBUT : '{dict_tournament['date_start']}', "
+                           f" DATE DE FIN : '{dict_tournament['date_end']}',"
+                           f" ROUND(S) JOUÉ(S) : '{len(dict_tournament['all_round'])}' sur"
+                                   f" '{dict_tournament['nb_total_round']}',"
+                           f" NOMBRE DE JOUEURS : '{len(dict_tournament['players_tournament'])}'"
+                           f" CONTRÔLE DE TEMPS :'{dict_tournament['control_time']}'.",
+                           ReportTournamentController(self._db, dict_tournament))
 
-        self.menu.add("Q", "  Revenir au précédent menu.", ReportMenuController())
+        self._menu.add("Q", "  Revenir au précédent menu.", ReportMenuController())
 
         # DISPLAY MENU AND GET USER CHOICE.
-        while self.check_1:
-            self.view.user_choice()
+        while self._check_1:
+            self._view.user_choice()
             answer = input(">> ")
 
-            if answer.upper() in self.menu:
-                self.user_choice = self.menu[answer.upper()]
-                self.check_1 = False
+            if answer.upper() in self._menu:
+                self._user_choice = self._menu[answer.upper()]
+                self._check_1 = False
 
             else:
-                self.view.error_entry()
-        return self.user_choice.handler
+                self._view.error_entry()
+        return self._user_choice.handler

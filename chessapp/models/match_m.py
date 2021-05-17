@@ -8,7 +8,6 @@ class Match:
 
     def __init__(self, player_1=None, result_1=None, player_2=None, result_2=None):
         self._match = ([player_1, result_1], [player_2, result_2])
-
         self._first_p = player_1
         self._second_p = player_2
         self._result_1 = result_1

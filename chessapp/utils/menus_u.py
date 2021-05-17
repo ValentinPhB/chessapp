@@ -1,20 +1,14 @@
-# import lib standard sans install
-
-# import lib a installer
-
-# import lib locales
-
 
 class MenuEntry:
     def __init__(self, option, handler):
-        self.option = option
+        self._option = option
         self.handler = handler
 
     def __repr__(self):
-        return f'MenuEntry({self.option}, {self.handler})'
+        return f'MenuEntry({self._option}, {self.handler})'
 
     def __str__(self):
-        return str(self.option)
+        return str(self._option)
 
 
 class Menu:

@@ -11,7 +11,7 @@ from chessapp.utils.clear_screen_u import Clear
 
 class EndScreenController:
     """
-    To quit the application from the HomeMEnuController.
+    To quit the application from the HomeMenuController.
     """
 
     def __init__(self):
@@ -27,18 +27,18 @@ class EndScreenSaveController:
     """
 
     def __init__(self, current_tournament):
-        self.tournament = current_tournament
-        self.db = DataBase()
-        self.view = EndScreenView()
+        self._tournament = current_tournament
+        self._db = DataBase()
+        self._view = EndScreenView()
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
 
-        self.view.quit()
+        self._view.quit()
 
 
 class EndTournamentController:
@@ -49,60 +49,61 @@ class EndTournamentController:
     """
 
     def __init__(self, current_tournament):
-        self.tournament = current_tournament
-        self.db = DataBase()
-        self.view = EndScreenView()
-        self.check_1 = True
+        self._tournament = current_tournament
+        self._db = DataBase()
+        self._view = EndScreenView()
+        self._check_1 = True
+        self._check_2 = True
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # SAVING STATE.
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
 
         # ADDING DATE_END TO THE CURRENT TOURNAMENT.
         self._add_date_end_tournament()
 
         # SHOW TOURNAMENT'S RANKING.
-        self.tournament.players_tournament.sort(key=lambda x: (- x.point, x.ranking))
-        self.view.show_ranking_tournament(self.tournament.players_tournament)
+        self._tournament.players_tournament.sort(key=lambda x: (- x.point, x.ranking))
+        self._view.show_ranking_tournament(self._tournament.players_tournament)
 
         # ASKING USER TO UPDATE ALL RANK TO PLAYERS IN DATABASE.
         list_player_db = []
-        for player in self.db.players_table:
-            instance_player = self.db.retrieve_player(player)
+        for player in self._db.players_table:
+            instance_player = self._db.retrieve_player(player)
             list_player_db.append(instance_player)
         list_player_db.sort(key=lambda x: x.ranking)
-        self.view.show_global_ranking(list_player_db)
+        self._view.show_global_ranking(list_player_db)
         self._reset_all_ranking_bdd()
-        self._update_ranking_for_all(self.tournament)
+        self._update_ranking_for_all(self._tournament)
 
         # SAVING TOURNAMENT.
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
-        time.sleep(1)
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
+        time.sleep(2)
         return menus_c.HomeMenuController()
 
     def _update_ranking_for_all(self, current_tournament):
-        self.view.welcome_assignation_ranking()
-        for element in self.db.players_table:
-            self.check_1 = True
-            while self.check_1:
-                self.view.choose_ranking_message(element)
+        self._view.welcome_assignation_ranking()
+        for element in self._db.players_table:
+            self._check_1 = True
+            while self._check_1:
+                self._view.choose_ranking_message(element)
                 answer = input(">> ")
                 try:
                     value = int(answer)
-                    if 0 < value and self.db.players_table.contains(where("ranking") == value):
-                        self.view.ranking_exists()
-                        self.check_2 = True
+                    if 0 < value and self._db.players_table.contains(where("ranking") == value):
+                        self._view.ranking_exists()
+                        self._check_2 = True
 
-                        while self.check_2:
-                            self.view.ranking_exists_keep()
+                        while self._check_2:
+                            self._view.ranking_exists_keep()
                             answer_2 = input(">> ")
                             if answer_2.upper() == 'O':
-                                self.db.players_table.update(
+                                self._db.players_table.update(
                                     {'ranking': value}, ((where('family_name') == element['family_name']) & (
                                         where('first_name') == element['first_name']) & (
                                         where('date_of_birth') == element['date_of_birth'])))
@@ -116,18 +117,18 @@ class EndTournamentController:
                                     else:
                                         pass
 
-                                self.check_2 = False
-                                self.check_1 = False
+                                self._check_2 = False
+                                self._check_1 = False
 
                             elif answer_2.upper() == 'N':
-                                self.check_2 = False
+                                self._check_2 = False
 
                             else:
-                                self.view.error_yes_no()
+                                self._view.error_yes_no()
 
                     elif 0 < value:
-                        self.view.ranking_ok()
-                        self.db.players_table.update({'ranking': value}, (
+                        self._view.ranking_ok()
+                        self._db.players_table.update({'ranking': value}, (
                             (where('family_name') == element['family_name']) & (
                                 where('first_name') == element['first_name']) & (
                                 where('date_of_birth') == element['date_of_birth'])))
@@ -141,18 +142,18 @@ class EndTournamentController:
                             else:
                                 pass
 
-                        self.check_1 = False
+                        self._check_1 = False
                     else:
-                        self.view.positive_value_needed()
+                        self._view.positive_value_needed()
 
                 except ValueError:
-                    self.view.positive_value_needed()
+                    self._view.positive_value_needed()
 
     def _add_date_end_tournament(self):
-        self.tournament.date_end = datetime.now().date().strftime("%d/%m/%Y")
-        self.view.add_date_tournament()
+        self._tournament.date_end = datetime.now().date().strftime("%d/%m/%Y")
+        self._view.add_date_tournament()
 
     def _reset_all_ranking_bdd(self):
-        for player in self.db.players_table:
+        for player in self._db.players_table:
             player_rank = player['ranking']
-            self.db.players_table.update({'ranking': 0}, where('ranking') == player_rank)
+            self._db.players_table.update({'ranking': 0}, where('ranking') == player_rank)

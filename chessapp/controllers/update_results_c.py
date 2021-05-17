@@ -14,35 +14,35 @@ class UpdateResultsController:
     """
 
     def __init__(self, current_tournament):
-        self.tournament = current_tournament
-        self.round = self.tournament.all_round[-1]
-        self.matches = self.round.matches
-        self.view = UpdateResultsView()
-        self.check_1 = True
-        self.db = DataBase()
+        self._tournament = current_tournament
+        self._round = self._tournament.all_round[-1]
+        self._matches = self._round.matches
+        self._view = UpdateResultsView()
+        self._check_1 = True
+        self._db = DataBase()
 
     def __call__(self):
         # CLEAR SCREEN.
         Clear().screen()
 
         # RESET ALL RESULTS FOR NEW MATCHES.
-        for element in self.tournament.players_tournament:
+        for element in self._tournament.players_tournament:
             element.result = float(0.0)
 
-        self.view.welcome()
-        self.view.information_message()
-        self.view.information_value()
+        self._view.welcome()
+        self._view.information_message()
+        self._view.information_value()
 
-        for element in self.matches:
-            self.check_1 = True
-            while self.check_1:
+        for element in self._matches:
+            self._check_1 = True
+            while self._check_1:
                 total_answer = 0
-                self.view.show_match(element)
-                self.view.show_player(element.first_p)
+                self._view.show_match(element)
+                self._view.show_player(element.first_p)
                 answer_1 = self._checking_value()
                 total_answer += answer_1
 
-                self.view.show_player(element.second_p)
+                self._view.show_player(element.second_p)
                 answer_2 = self._checking_value()
                 total_answer += answer_2
                 if total_answer == 1:
@@ -60,23 +60,24 @@ class UpdateResultsController:
 
                     # INCREMENT POINTS PLAYER 1 FOR TOURNAMENT RANKING.
                     element.second_p.increment_point(answer_2)
-                    self.check_1 = False
+                    self._check_1 = False
 
                 else:
-                    self.view.error_max_point()
-                    self.view.information_value()
+                    self._view.error_max_point()
+                    self._view.information_value()
 
         # SET DATE_ENDS FOR ROUND.
-        self.tournament.all_round[-1].time_ends = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-        self.view.auto_add_ends()
+        self._tournament.all_round[-1].time_ends = (datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        self._view.auto_add_ends()
         time.sleep(1)
 
         # SAVE ACTUAL STATE.
-        self.db.save_tournament(self.tournament)
-        self.view.saving_state()
+        self._db.save_tournament(self._tournament)
+        self._view.saving_state()
+        time.sleep(2)
 
         # RETURN FOR SUGGEST UPDATE RANKING.
-        return menus_c.SuggestRankingMenuController(self.tournament)
+        return menus_c.SuggestRankingMenuController(self._tournament)
 
     # TOOL FOR CHECKING VALUE.
     def _checking_value(self):
@@ -97,9 +98,9 @@ class UpdateResultsController:
                     check_2 = False
 
                 else:
-                    self.view.error_entry()
+                    self._view.error_entry()
 
             except ValueError:
-                self.view.error_entry()
+                self._view.error_entry()
 
         return test
