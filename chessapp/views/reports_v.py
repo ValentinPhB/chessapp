@@ -1,3 +1,5 @@
+import time
+
 from chessapp.utils.clear_screen_u import Clear
 
 
@@ -44,7 +46,7 @@ class ReportPlayerViews:
     @staticmethod
     def finish():
         print("LES DEUX RAPPORTS CONCERNANT LES JOUEURS ENREGISTRÉS DANS LA BASE DE DONNÉES SONT AFFICHÉS CI-DESSUS.")
-        print("> INFORMATION : Vous êtes redirigé vers le menu de rapports.")
+        print("> INFORMATION : Vous allez être redirigé vers le menu de rapports.")
 
     @staticmethod
     def stop_up():
@@ -102,7 +104,8 @@ class ReportTournamentViews:
                   f" CLASSEMENT GÉNÉRAL : '{player['ranking']}'.")
             i += 1
 
-        self._stop()
+        answer = self._stop_1()
+        return answer
 
     def all_rounds_tournament(self):
         print("\nLISTE DE TOUS LES TOUR DU TOURNOI CHOISI :")
@@ -112,7 +115,7 @@ class ReportTournamentViews:
         for _round in list_rounds:
             # CLEAR SCREEN.
             Clear().screen()
-            print(f"\n>> >> >> POUR LE '{_round['name']}' sur '{_round['nb_total_round']}',"
+            print(f"\n\n>> >> >> POUR LE '{_round['name']}' sur '{_round['nb_total_round']}',"
                   f" DÉBUT : '{_round['time_starts']}',"
                   f" FIN : '{_round['time_ends']}' << << << \n")
 
@@ -139,7 +142,7 @@ class ReportTournamentViews:
                       f" JOUEUR 2 : '{_matches['result_2']}' point(s) pour ce match.\n")
                 i += 1
 
-                self._stop()
+                self._stop_2()
 
     @staticmethod
     def finish():
@@ -147,9 +150,20 @@ class ReportTournamentViews:
         print("> INFORMATION : Vous êtes redirigé vers le menu de rapports.\n")
 
     @staticmethod
-    def _stop():
+    def _stop_1():
         print("\n\n\n-----------------------------------------------------------------------------------------")
         print("|Le prompt suivant marque un temps d'arrêt pour faciliter votre lecture des informations|")
-        _pass = input("|         Entrez n'importe quel caractère pour continuer, ou appuyez sur entrée         |")
-        print("----------------------------------------------------------------------------------------\n\n")
-        return _pass
+        print("|                                    ---------------                                    |")
+        answer = input("|                 Appuyez sur 'Q' pour quitter ou entrer pour continuer                 |")
+        return answer
+
+    @staticmethod
+    def _stop_2():
+        print("\n\n-----------------------------------------------------------------------------------------")
+        print("|Le prompt suivant marque un temps d'arrêt pour faciliter votre lecture des informations|")
+        print("|                                    ---------------                                    |")
+        answer = input("|         Entrez n'importe quel caractère ou appuyez sur entrée pour continuer.         |")
+        print("-----------------------------------------------------------------------------------------\n\n\n")
+        time.sleep(1)
+        print("°°° ROUND SUIVANT :\n")
+        return answer
