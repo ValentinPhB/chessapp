@@ -180,7 +180,7 @@ class PlayerDataMenuController:
 
                                    AddPlayerFromDataController(self._tournament, players))
 
-                self._menu.add("\nQ", "  REVENIR AU MENU D'AJOUT DES JOUEURS.",
+                self._menu.add("Q", "  REVENIR AU MENU D'AJOUT DES JOUEURS.",
                                AddPlayerMenuController(self._tournament))
 
                 self._view.welcome_add_from_data()

@@ -165,5 +165,5 @@ class ReportTournamentViews:
         answer = input("|         Entrez n'importe quel caractère ou appuyez sur entrée pour continuer.         |")
         print("-----------------------------------------------------------------------------------------\n\n\n")
         time.sleep(1)
-        print("°°° ROUND SUIVANT :\n")
+        print("°°° MATCH SUIVANT :\n")
         return answer
