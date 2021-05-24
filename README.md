@@ -72,7 +72,7 @@ After installing Python.exe please see the appropriate guide for your operating 
 ### A) *Setup for Unix*
 
 After downloading chessapp-main.zip from Github, extract it to a location of your choice (exemple : "PATH").
-Or if you use git, clone it from https://github.com/ValentinPhB/chessapp.git
+Or if you use git, download it from https://github.com/ValentinPhB/chessapp.git
 
 Create a virtual environment in "PATH" and install packages from requirements.txt.
 ```
@@ -91,7 +91,7 @@ $ python3 main.py
 ### B) *Setup for Windows* 
 
 After downloading chessapp-main.zip from Github, extract it to a location of your choice (exemple : "PATH").
-Or if you use git, clone it from https://github.com/ValentinPhB/chessapp.git
+Or if you use git, download it from https://github.com/ValentinPhB/chessapp.git
 
 Then, using cmd, go to "PATH", create a virtual environment and install packages from requirements.txt.
 ```
