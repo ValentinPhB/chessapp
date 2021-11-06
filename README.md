@@ -1,4 +1,4 @@
-# chessapp  -CENTRE ÉCHEC-
+# chessapp  -CENTRE ÉCHEC- management software for chess tournament
 
 ## Table of contents
 
